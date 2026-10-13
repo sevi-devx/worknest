@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Employee Management System - Dashboard</title>
+        <!-- Google Fonts Inter -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <!-- FontAwesome Icons -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+
+        <link rel="stylesheet" href="assets/css/style.css" />
+        <link rel="stylesheet" href="assets/css/global.css" />
+        <link rel="stylesheet" href="assets/css/styleguide.css" />
+    </head>
+    <body>
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-logo">E</div>
+                <div class="brand-text">Staff<span>Hub</span></div>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="menu-category">Main Menu</li>
+                <li class="menu-item active">
+                    <a href="#"
+                        ><i class="fa-solid fa-chart-pie"></i> Dashboard</a
+                    >
+                </li>
+                <li class="menu-item">
+                    <a href="#"><i class="fa-solid fa-users"></i> Employees</a>
+                </li>
+                <li class="menu-item">
+                    <a href="#"
+                        ><i class="fa-solid fa-sitemap"></i> Departments</a
+                    >
+                </li>
+                <li class="menu-item">
+                    <a href="#"
+                        ><i class="fa-solid fa-calendar-check"></i>
+                        Attendance</a
+                    >
+                </li>
+                <li class="menu-item">
+                    <a href="#"
+                        ><i class="fa-solid fa-file-invoice-dollar"></i>
+                        Payroll</a
+                    >
+                </li>
+
+                <li class="menu-category">System</li>
+                <li class="menu-item">
+                    <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
+                </li>
+                <li class="menu-item">
+                    <a href="#"
+                        ><i class="fa-solid fa-shield-halved"></i> Roles &
+                        Permissions</a
+                    >
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <div class="user-card-mini">
+                    <img
+                        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100"
+                        alt="Admin Avatar"
+                        onerror="
+                            this.src =
+                                'https://placehold.co/100x100/2563eb/ffffff?text=AD'
+                        "
+                    />
+                    <div class="user-card-info">
+                        <div class="user-card-name">Sarah Jenkins</div>
+                        <div class="user-card-role">HR Admin</div>
+                    </div>
+                    <button title="Logout" style="color: var(--text-muted)">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <div class="main-wrapper">
+            <header class="navbar">
+                <div style="display: flex; align-items: center; gap: 1rem">
+                    <button
+                        id="toggle-sidebar"
+                        class="nav-icon-btn"
+                        style="display: none"
+                    >
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="search-bar">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input
+                            type="text"
+                            placeholder="Search employees, ID, role..."
+                        />
+                    </div>
+                </div>
+
+                <div class="navbar-actions">
+                    <button class="nav-icon-btn" title="Notifications">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="notification-badge"></span>
+                    </button>
+                    <button class="nav-icon-btn" title="Messages">
+                        <i class="fa-regular fa-comment"></i>
+                    </button>
+                    <div class="nav-divider"></div>
+                    <div
+                        style="
+                            font-size: 0.85rem;
+                            font-weight: 600;
+                            color: var(--text-main);
+                        "
+                    >
+                        Oct 13, 2026
+                    </div>
+                </div>
+            </header>
+
+            <main class="dashboard-container">
+                <!-- Header Section -->
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Dashboard Overview</h1>
+                        <p class="page-subtitle">
+                            Welcome back, Sarah! Here is your HR summary for
+                            today.
+                        </p>
+                    </div>
+                    <button class="btn-primary">
+                        <i class="fa-solid fa-plus"></i> Add Employee
+                    </button>
+                </div>
+
+                <!-- Quick Metrics Cards -->
+                <section class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h3>Total Employees</h3>
+                            <div class="metric-value">248</div>
+                            <div class="metric-trend trend-up">
+                                <i class="fa-solid fa-arrow-up"></i> 12%
+                                <span>vs last month</span>
+                            </div>
+                        </div>
+                        <div class="metric-icon icon-blue">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h3>Active Departments</h3>
+                            <div class="metric-value">8</div>
+                            <div class="metric-trend trend-neutral">
+                                <i class="fa-solid fa-minus"></i> 0%
+                                <span>vs last month</span>
+                            </div>
+                        </div>
+                        <div class="metric-icon icon-purple">
+                            <i class="fa-solid fa-sitemap"></i>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h3>Present Today</h3>
+                            <div class="metric-value">215</div>
+                            <div class="metric-trend trend-up">
+                                <i class="fa-solid fa-arrow-up"></i> 94%
+                                <span>attendance rate</span>
+                            </div>
+                        </div>
+                        <div class="metric-icon icon-green">
+                            <i class="fa-solid fa-user-check"></i>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h3>Pending Leave</h3>
+                            <div class="metric-value">14</div>
+                            <div class="metric-trend trend-down">
+                                <i class="fa-solid fa-arrow-down"></i> 3
+                                <span>requires approval</span>
+                            </div>
+                        </div>
+                        <div class="metric-icon icon-amber">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="analytics-grid">
+                    <!-- Weekly Attendance Chart Structure -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">Attendance Trends</h2>
+                                <p class="card-subtitle">
+                                    Weekly summary of employee presence
+                                </p>
+                            </div>
+                            <select
+                                style="
+                                    padding: 0.35rem 0.5rem;
+                                    border-radius: var(--radius-sm);
+                                    border: 1px solid var(--border-color);
+                                    font-size: 0.8rem;
+                                    background: var(--surface);
+                                "
+                            >
+                                <option>This Week</option>
+                                <option>Last Week</option>
+                            </select>
+                        </div>
+
+                        <div class="chart-placeholder">
+                            <div class="chart-bar-group">
+                                <div class="bar-wrapper">
+                                    <div
+                                        class="bar-fill"
+                                        style="height: 85%"
+                                    ></div>
+                                </div>
+                                <span class="bar-label">Mon</span>
+                            </div>
+                            <div class="chart-bar-group">
+                                <div class="bar-wrapper">
+                                    <div
+                                        class="bar-fill"
+                                        style="height: 92%"
+                                    ></div>
+                                </div>
+                                <span class="bar-label">Tue</span>
+                            </div>
+                            <div class="chart-bar-group">
+                                <div class="bar-wrapper">
+                                    <div
+                                        class="bar-fill"
+                                        style="height: 88%"
+                                    ></div>
+                                </div>
+                                <span class="bar-label">Wed</span>
+                            </div>
+                            <div class="chart-bar-group">
+                                <div class="bar-wrapper">
+                                    <div
+                                        class="bar-fill"
+                                        style="height: 95%"
+                                    ></div>
+                                </div>
+                                <span class="bar-label">Thu</span>
+                            </div>
+                            <div class="chart-bar-group">
+                                <div class="bar-wrapper">
+                                    <div
+                                        class="bar-fill"
+                                        style="height: 78%"
+                                    ></div>
+                                </div>
+                                <span class="bar-label">Fri</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Department Breakdown -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">Department Stats</h2>
+                                <p class="card-subtitle">Headcount breakdown</p>
+                            </div>
+                        </div>
+
+                        <div class="dept-list">
+                            <div class="dept-item">
+                                <div class="dept-info">
+                                    <span>Engineering</span>
+                                    <span>84</span>
+                                </div>
+                                <div class="dept-progress">
+                                    <div
+                                        class="dept-fill"
+                                        style="
+                                            width: 65%;
+                                            background-color: var(--primary);
+                                        "
+                                    ></div>
+                                </div>
+                            </div>
+
+                            <div class="dept-item">
+                                <div class="dept-info">
+                                    <span>Design & Product</span>
+                                    <span>42</span>
+                                </div>
+                                <div class="dept-progress">
+                                    <div
+                                        class="dept-fill"
+                                        style="
+                                            width: 40%;
+                                            background-color: #9333ea;
+                                        "
+                                    ></div>
+                                </div>
+                            </div>
+
+                            <div class="dept-item">
+                                <div class="dept-info">
+                                    <span>Sales & Marketing</span>
+                                    <span>68</span>
+                                </div>
+                                <div class="dept-progress">
+                                    <div
+                                        class="dept-fill"
+                                        style="
+                                            width: 52%;
+                                            background-color: var(--info);
+                                        "
+                                    ></div>
+                                </div>
+                            </div>
+
+                            <div class="dept-item">
+                                <div class="dept-info">
+                                    <span>Human Resources</span>
+                                    <span>12</span>
+                                </div>
+                                <div class="dept-progress">
+                                    <div
+                                        class="dept-fill"
+                                        style="
+                                            width: 18%;
+                                            background-color: var(--warning);
+                                        "
+                                    ></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card table-card">
+                    <div class="card-header table-header-padding">
+                        <div>
+                            <h2 class="card-title">Recent Employees</h2>
+                            <p class="card-subtitle">
+                                Manage and view employee records
+                            </p>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem">
+                            <button class="page-btn">
+                                <i class="fa-solid fa-filter"></i> Filter
+                            </button>
+                            <button class="page-btn">
+                                <i class="fa-solid fa-download"></i> Export
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Role</th>
+                                    <th>Department</th>
+                                    <th>Status</th>
+                                    <th>Joined Date</th>
+                                    <th style="text-align: right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="employee-cell">
+                                            <img
+                                                class="employee-avatar"
+                                                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100"
+                                                alt="Avatar"
+                                                onerror="
+                                                    this.src =
+                                                        'https://placehold.co/100x100/2563eb/ffffff?text=EA'
+                                                "
+                                            />
+                                            <div>
+                                                <span class="employee-name"
+                                                    >Emily Alex</span
+                                                >
+                                                <span class="employee-email"
+                                                    >emily.a@company.com</span
+                                                >
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Lead UI/UX Designer</td>
+                                    <td>Design</td>
+                                    <td>
+                                        <span class="badge badge-active">
+                                            <span class="badge-dot"></span>
+                                            Active
+                                        </span>
+                                    </td>
+                                    <td>Jan 15, 2023</td>
+                                    <td>
+                                        <div
+                                            class="actions-cell"
+                                            style="justify-content: flex-end"
+                                        >
+                                            <button
+                                                class="btn-action edit"
+                                                title="Edit"
+                                            >
+                                                <i
+                                                    class="fa-regular fa-pen-to-square"
+                                                ></i>
+                                            </button>
+                                            <button
+                                                class="btn-action"
+                                                title="View Details"
+                                            >
+                                                <i
+                                                    class="fa-regular fa-eye"
+                                                ></i>
+                                            </button>
+                                            <button
+                                                class="btn-action delete"
+                                                title="Delete"
+                                            >
+                                                <i
+                                                    class="fa-regular fa-trash-can"
+                                                ></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="employee-cell">
+                                            <img
+                                                class="employee-avatar"
+                                                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100"
+                                                alt="Avatar"
+                                                onerror="
+                                                    this.src =
+                                                        'https://placehold.co/100x100/2563eb/ffffff?text=MC'
+                                                "
+                                            />
+                                            <div>
+                                                <span class="employee-name"
+                                                    >Marcus Chen</span
+                                                >
+                                                <span class="employee-email"
+                                                    >marcus.c@company.com</span
+                                                >
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Senior Backend Dev</td>
+                                    <td>Engineering</td>
+                                    <td>
+                                        <span class="badge badge-active">
+                                            <span class="badge-dot"></span>
+                                            Active
+                                        </span>
+                                    </td>
+                                    <td>Mar 02, 2022</td>
+                                    <td>
+                                        <div
+                                            class="actions-cell"
+                                            style="justify-content: flex-end"
+                                        >
+                                            <button
+                                                class="btn-action edit"
+                                                title="Edit"
+                                            >
+                                                <i
+                                                    class="fa-regular fa-pen-to-square"
+                                                ></i>
+                                            </button>
+                                            <button
+                                                class="btn-action"
+                                                title="View Details"
+                                            >
+                                                <i
+                                                    class="fa-regular fa-eye"
+                                                ></i>
+                                            </button>
+                                            <button
+                                                class="btn-action delete"
+                                                title="Delete"
+                                            >
+                                                <i
+                                                    class="fa-regular fa-trash-can"
+                                                ></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="employee-cell">
+                                            <img
+                                                class="employee-avatar"
+                                                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=100"
+                                                alt="Avatar"
+                                                onerror="
+                                                    this.src =
+                                                        'https://placehold.co/100x100/2563eb/ffffff?text=SW'
+                                                "
+                                            />
+                                            <div>
+                                                <span class="employee-name"
+                                                    >Sophia Washington</span
+                                                >
+                                                <span class="employee-email"
+                                                    >sophia.w@company.com</span
+                                                >
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Marketing Manager</td>
+                                    <td>Marketing</td>
+                                    <td>
+                                        <span class="badge badge-leave">
+                                            <span class="badge-dot"></span> On
+                                            Leave
+                                        </span>
+                                    </td>
+                                    <td>Nov 18, 2021</td>
+                                    <td>
+                                        <div
+                                            class="actions-cell"
+                                            style="justify-content: flex-end"
+                                        >
+                                            <button
+                                                class="btn-action edit"
+                                                title="Edit"
+                                            >
+                                                <i
+                                                    class="fa-regular fa-pen-to-square"
+                                                ></i>
+                                            </button>
+                                            <button
+                                                class="btn-action"
+                                                title="View Details"
+                                            >
+                                                <i
+                                                    class="fa-regular fa-eye"
+                                                ></i>
+                                            </button>
+                                            <button
+                                                class="btn-action delete"
+                                                title="Delete"
+                                            >
+                                                <i
+                                                    class="fa-regular fa-trash-can"
+                                                ></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="employee-cell">
+                                            <img
+                                                class="employee-avatar"
+                                                src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100"
+                                                alt="Avatar"
+                                                onerror="
+                                                    this.src =
+                                                        'https://placehold.co/100x100/2563eb/ffffff?text=DR'
+                                                "
+                                            />
+                                            <div>
+                                                <span class="employee-name"
+                                                    >David Ross</span
+                                                >
+                                                <span class="employee-email"
+                                                    >david.r@company.com</span
+                                                >
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>HR Specialist</td>
+                                    <td>Human Resources</td>
+                                    <td>
+                                        <span class="badge badge-inactive">
+                                            <span class="badge-dot"></span>
+                                            Inactive
+                                        </span>
+                                    </td>
+                                    <td>May 10, 2024</td>
+                                    <td>
+                                        <div
+                                            class="actions-cell"
+                                            style="justify-content: flex-end"
+                                        >
+                                            <button
+                                                class="btn-action edit"
+                                                title="Edit"
+                                            >
+                                                <i
+                                                    class="fa-regular fa-pen-to-square"
+                                                ></i>
+                                            </button>
+                                            <button
+                                                class="btn-action"
+                                                title="View Details"
+                                            >
+                                                <i
+                                                    class="fa-regular fa-eye"
+                                                ></i>
+                                            </button>
+                                            <button
+                                                class="btn-action delete"
+                                                title="Delete"
+                                            >
+                                                <i
+                                                    class="fa-regular fa-trash-can"
+                                                ></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Table Pagination -->
+                    <div class="table-footer">
+                        <span>Showing 1 to 4 of 248 employees</span>
+                        <div class="pagination">
+                            <button class="page-btn" disabled>Previous</button>
+                            <button class="page-btn active">1</button>
+                            <button class="page-btn">2</button>
+                            <button class="page-btn">3</button>
+                            <button class="page-btn">Next</button>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const toggleBtn = document.getElementById("toggle-sidebar");
+                const sidebar = document.getElementById("sidebar");
+
+                // Toggle sidebar display on mobile sizes
+                if (toggleBtn && sidebar) {
+                    toggleBtn.addEventListener("click", () => {
+                        sidebar.classList.toggle("open");
+                    });
+                }
+
+                // Check screen width for toggling responsive helper button
+                const handleResize = () => {
+                    if (window.innerWidth <= 768) {
+                        toggleBtn.style.display = "flex";
+                    } else {
+                        toggleBtn.style.display = "none";
+                        sidebar.classList.remove("open");
+                    }
+                };
+
+                window.addEventListener("resize", handleResize);
+                handleResize();
+            });
+        </script>
+    </body>
+</html>
