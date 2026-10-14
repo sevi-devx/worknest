@@ -61,7 +61,6 @@ button {
 .brand-logo {
     width: 38px;
     height: 38px;
-    background: linear-gradient(135deg, var(--primary), #3b82f6);
     color: white;
     border-radius: var(--radius-md);
     display: flex;
@@ -73,7 +72,7 @@ button {
 }
 
 .brand-text {
-    font-size: 1.15rem;
+    font-size: 1.8rem;
     font-weight: 700;
     color: var(--text-main);
     letter-spacing: -0.02em;
@@ -195,8 +194,9 @@ button {
 }
 
 .nav-icon-btn {
-    width: 40px;
-    height: 40px;
+    font-size: 1.5rem;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     display: flex;
     align-items: center;
