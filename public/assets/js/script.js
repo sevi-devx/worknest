@@ -65,8 +65,7 @@ setInterval(updateClock, 1000);
 
 // REST API
 
-const API_URL =
-    "http://https://employee-management-system-two-ebon.vercel.app/api/employees";
+const API_URL = "/api/employees";
 const tbody = document.getElementById("employee-table-body");
 const entriesText = document.querySelector("#entries");
 
