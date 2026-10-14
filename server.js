@@ -13,6 +13,12 @@ const db = mysql.createPool({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
+
+    waitForConnections: true,
+    connectionLimit: 2,
+    maxIdle: 1,
+    idleTimeout: 10000,
+    queueLimit: 10,
 });
 
 app.use(cors());
