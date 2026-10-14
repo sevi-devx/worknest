@@ -28,24 +28,35 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // GET
 app.get("/api/employees", async (req, res) => {
-    const [rows] = await db.query(`
-        SELECT 
-            employees.id,
-            employees.name,
-            employees.role,
-            departments.name AS department,
-            CASE employees.status
-                WHEN 'active' THEN 'Active'
-                WHEN 'inactive' THEN 'Inactive'
-                ELSE 'On Leave'
-            END AS status,
-            DATE_FORMAT(employees.join_date, '%b %d, %Y') AS joinDate
-                FROM employees
-                LEFT JOIN departments ON departments.id = employees.department_id
-                ORDER BY employees.id
-    `);
+    try {
+        const [rows] = await db.query(`
+            SELECT
+                employees.id,
+                employees.name,
+                employees.role,
+                departments.name AS department,
+                CASE employees.status
+                    WHEN 'active' THEN 'Active'
+                    WHEN 'inactive' THEN 'Inactive'
+                    ELSE 'On Leave'
+                END AS status,
+                DATE_FORMAT(
+                    employees.join_date, '%b %d, %Y'
+                ) AS joinDate
+            FROM employees
+            LEFT JOIN departments
+                ON departments.id = employees.department_id
+            ORDER BY employees.id
+        `);
 
-    res.status(200).json(rows);
+        return res.status(200).json(rows);
+    } catch (error) {
+        console.error("Failed to fetch employees:", error.message);
+
+        return res.status(500).json({
+            message: "Failed to fetch employees.",
+        });
+    }
 });
 
 // POST
