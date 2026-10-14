@@ -61,6 +61,8 @@ app.post("/api/employees", async (req, res) => {
     });
 });
 
+app.delete("/api/employees", async (req, res) => {});
+
 if (require.main === module) {
     app.listen(PORT, () => {
         console.log(`Server running at http://localhost:${PORT}`);
