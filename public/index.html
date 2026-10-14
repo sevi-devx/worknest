@@ -335,171 +335,11 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="employee-cell">
-                                                <img
-                                                    class="employee-avatar"
-                                                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100"
-                                                    alt="Avatar"
-                                                />
-                                                <div>
-                                                    <span class="employee-name"
-                                                        >Emily Alex</span
-                                                    >
-                                                    <span class="employee-email"
-                                                        >emily.a@company.com</span
-                                                    >
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>Lead UI/UX Designer</td>
-                                        <td>Design</td>
-                                        <td>
-                                            <span class="badge badge-active"
-                                                ><span class="badge-dot"></span>
-                                                Active</span
-                                            >
-                                        </td>
-                                        <td>Jan 15, 2023</td>
-                                        <td>
-                                            <div
-                                                class="actions-cell"
-                                                style="
-                                                    justify-content: flex-end;
-                                                "
-                                            >
-                                                <button
-                                                    class="btn-action edit edit-modal-btn"
-                                                    title="Edit"
-                                                >
-                                                    <i
-                                                        class="fa-regular fa-pen-to-square"
-                                                    ></i>
-                                                </button>
-                                                <button
-                                                    class="btn-action delete"
-                                                    title="Delete"
-                                                >
-                                                    <i
-                                                        class="fa-regular fa-trash-can"
-                                                    ></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="employee-cell">
-                                                <img
-                                                    class="employee-avatar"
-                                                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100"
-                                                    alt="Avatar"
-                                                />
-                                                <div>
-                                                    <span class="employee-name"
-                                                        >Marcus Chen</span
-                                                    >
-                                                    <span class="employee-email"
-                                                        >marcus.c@company.com</span
-                                                    >
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>Senior Backend Dev</td>
-                                        <td>Engineering</td>
-                                        <td>
-                                            <span class="badge badge-active"
-                                                ><span class="badge-dot"></span>
-                                                Active</span
-                                            >
-                                        </td>
-                                        <td>Mar 02, 2022</td>
-                                        <td>
-                                            <div
-                                                class="actions-cell"
-                                                style="
-                                                    justify-content: flex-end;
-                                                "
-                                            >
-                                                <button
-                                                    class="btn-action edit edit-modal-btn"
-                                                    title="Edit"
-                                                >
-                                                    <i
-                                                        class="fa-regular fa-pen-to-square"
-                                                    ></i>
-                                                </button>
-                                                <button
-                                                    class="btn-action delete"
-                                                    title="Delete"
-                                                >
-                                                    <i
-                                                        class="fa-regular fa-trash-can"
-                                                    ></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="employee-cell">
-                                                <img
-                                                    class="employee-avatar"
-                                                    src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=100"
-                                                    alt="Avatar"
-                                                />
-                                                <div>
-                                                    <span class="employee-name"
-                                                        >Sophia Washington</span
-                                                    >
-                                                    <span class="employee-email"
-                                                        >sophia.w@company.com</span
-                                                    >
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>Marketing Manager</td>
-                                        <td>Marketing</td>
-                                        <td>
-                                            <span class="badge badge-leave"
-                                                ><span class="badge-dot"></span>
-                                                On Leave</span
-                                            >
-                                        </td>
-                                        <td>Nov 18, 2021</td>
-                                        <td>
-                                            <div
-                                                class="actions-cell"
-                                                style="
-                                                    justify-content: flex-end;
-                                                "
-                                            >
-                                                <button
-                                                    class="btn-action edit edit-modal-btn"
-                                                    title="Edit"
-                                                >
-                                                    <i
-                                                        class="fa-regular fa-pen-to-square"
-                                                    ></i>
-                                                </button>
-                                                <button
-                                                    class="btn-action delete"
-                                                    title="Delete"
-                                                >
-                                                    <i
-                                                        class="fa-regular fa-trash-can"
-                                                    ></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
+                                <tbody id="employee-table-body"></tbody>
                             </table>
                         </div>
                         <div class="table-footer">
-                            <span>Showing 3 entries</span>
+                            <span id="entries"></span>
                             <div class="pagination">
                                 <button class="page-btn active">1</button>
                             </div>
@@ -839,37 +679,12 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Full Name</label>
+                        <label>Department Name</label>
                         <input
                             type="text"
                             class="form-control"
-                            placeholder="e.g. Jane Doe"
+                            placeholder="e.g. Engineering"
                         />
-                    </div>
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input
-                            type="email"
-                            class="form-control"
-                            placeholder="e.g. jane@company.com"
-                        />
-                    </div>
-                    <div class="form-group">
-                        <label>Role</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            placeholder="e.g. Software Engineer"
-                        />
-                    </div>
-                    <div class="form-group">
-                        <label>Department</label>
-                        <select class="form-control">
-                            <option>Engineering</option>
-                            <option>Design</option>
-                            <option>Marketing</option>
-                            <option>Human Resources</option>
-                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">

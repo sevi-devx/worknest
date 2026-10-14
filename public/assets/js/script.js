@@ -62,3 +62,72 @@ function updateClock() {
 }
 
 setInterval(updateClock, 1000);
+
+// REST API
+
+const API_URL = "http://localhost:3000/api/employees";
+const tbody = document.getElementById("employee-table-body");
+const entriesText = document.querySelector("#entries");
+
+async function loadEmployees() {
+    const response = await fetch(API_URL);
+    const employees = await response.json();
+
+    let rowsHtml = "";
+
+    employees.forEach((emp) => {
+        rowsHtml += makeRow(emp);
+    });
+
+    tbody.innerHTML = rowsHtml;
+    entriesText.innerText = `Showing ${employees.length} entries`;
+}
+
+function makeRow(emp) {
+    // Pick the badge style depending on the status
+    let badgeClass = "badge-inactive";
+    if (emp.status === "Active") {
+        badgeClass = "badge-active";
+    } else if (emp.status === "On Leave") {
+        badgeClass = "badge-leave";
+    }
+
+    const avatar =
+        "https://ui-avatars.com/api/?name=" + encodeURIComponent(emp.name);
+
+    return `
+    <tr>
+      <td>
+        <div class="employee-cell">
+          <img class="employee-avatar" src="${avatar}" alt="Avatar" />
+          <div>
+            <span class="employee-name">${emp.name}</span>
+            <span class="employee-email">${emp.role}</span>
+          </div>
+        </div>
+      </td>
+      <td>${emp.role}</td>
+      <td>${emp.department}</td>
+      <td>
+        <span class="badge ${badgeClass}">
+          <span class="badge-dot"></span> ${emp.status}
+        </span>
+      </td>
+      <td>${emp.joinDate}</td>
+      <td>
+        <div class="actions-cell" style="justify-content: flex-end;">
+          <button class="btn-action edit edit-modal-btn" title="Edit"
+                  onclick="editEmployee(${emp.id})">
+            <i class="fa-regular fa-pen-to-square"></i>
+          </button>
+          <button class="btn-action delete" title="Delete"
+                  onclick="deleteEmployee(${emp.id})">
+            <i class="fa-regular fa-trash-can"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+  `;
+}
+
+loadEmployees();
