@@ -61,8 +61,20 @@ app.post("/api/employees", async (req, res) => {
     });
 });
 
-app.delete("/api/employees", async (req, res) => {});
-
+// app.delete("/api/employees/:id", async (req, res) => {
+//     const { id } = req.params.id ?? {};
+//
+//     if (!name) {
+//         return res.status(400).json({ message: "We need your name!" });
+//     }
+//
+//     await db.query(
+//         `DELETE FROM employees
+//         WHERE name = ?`,
+//         [name],
+//     );
+// });
+//
 if (require.main === module) {
     app.listen(PORT, () => {
         console.log(`Server running at http://localhost:${PORT}`);

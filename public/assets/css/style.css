@@ -2,7 +2,6 @@ a {
     text-decoration: none;
     color: inherit;
 }
-
 button {
     cursor: pointer;
     border: none;
@@ -12,6 +11,10 @@ button {
 }
 
 /* Sidebar Styling */
+#toggle-sidebar {
+    display: none;
+}
+
 .sidebar {
     width: var(--sidebar-width);
     background-color: var(--surface);
@@ -33,6 +36,26 @@ button {
     padding: 0 1.5rem;
     border-bottom: 1px solid var(--border-color);
     gap: 0.75rem;
+}
+
+/* Sidebar Overlay Backdrop */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 95;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+}
+
+/* Active class added via JavaScript */
+.sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
 }
 
 .brand-logo {
@@ -761,5 +784,8 @@ tr:hover td {
     }
     .dashboard-container {
         padding: 1rem;
+    }
+    #toggle-sidebar {
+        display: block;
     }
 }

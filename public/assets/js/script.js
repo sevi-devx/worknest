@@ -93,7 +93,7 @@ function makeRow(emp) {
     }
 
     const avatar =
-        "https://ui-avatars.com/api/?name=" + encodeURIComponent(emp.name);
+        "http://ui-avatars.com/api/?name=" + encodeURIComponent(emp.name);
 
     return `
     <tr>
@@ -131,3 +131,28 @@ function makeRow(emp) {
 }
 
 loadEmployees();
+
+const toggleBtn = document.getElementById("toggle-sidebar");
+const sidebar = document.getElementById("sidebar");
+const sidebarOverlay = document.querySelector(".sidebar-overlay");
+
+const closeSidebar = () => {
+    sidebar.classList.remove("open");
+    sidebarOverlay.classList.remove("active");
+};
+
+const openSidebar = () => {
+    sidebar.classList.add("open");
+    sidebarOverlay.classList.add("active");
+};
+
+toggleBtn.addEventListener("click", () => {
+    if (toggleBtn && sidebar) {
+        openSidebar();
+
+        sidebarOverlay.addEventListener("click", () => {
+            closeSidebar();
+            console.log("sidebarOverlay clicked");
+        });
+    }
+});
