@@ -49,7 +49,6 @@ app.get("/api/employees", async (req, res) => {
             ORDER BY employees.id
         `);
 
-        await notifyEmployeesChanged();
         return res.status(200).json(rows);
     } catch (error) {
         console.error("Failed to fetch employees:", error.message);
@@ -108,7 +107,6 @@ app.delete("/api/employees/:id", async (req, res) => {
                 message: "Employee not found",
             });
         }
-
         await notifyEmployeesChanged();
         return res.status(200).json({
             message: "Employee deleted successfully",
