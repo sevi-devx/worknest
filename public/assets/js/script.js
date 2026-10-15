@@ -64,12 +64,17 @@ window.deleteEmployee = deleteEmployee;
 // Add and save employee
 async function addNewEmployee() {
     try {
+        closeModalOverlay();
         console.log("pressed add new employee");
         const name = document.getElementById("add-new-employee-name").value;
         const role = document.getElementById("add-new-employee-role").value;
         const department = document.getElementById(
             "add-new-employee-department",
         ).value;
+        document.getElementById("add-new-employee-department").value = "";
+        document.getElementById("add-new-employee-name").value = "";
+        document.getElementById("add-new-employee-role").value = "";
+
         const status = "inactive";
         const joinDate = currentDate();
         const response = await fetch(`/api/employees`, {
@@ -91,13 +96,16 @@ async function addNewEmployee() {
             throw new Error(result.message || "Failed to add employee");
         }
 
-        closeModalOverlay();
         await loadEmployees();
     } catch (error) {
         console.error("Failed to add employee:", error);
     }
 }
 window.addNewEmployee = addNewEmployee;
+
+// Edit and save employee
+async function editEmployee() {}
+
 // Add Department Overlay
 const departmentModalBtn = document.querySelector(".add-department-modal-btn");
 
