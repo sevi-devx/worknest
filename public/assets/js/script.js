@@ -1,3 +1,10 @@
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const supabase = createClient(
+    "https://yyrsdeildevgexbueony.supabase.co",
+    "sb_publishable_VMFaAijOxAfxW7uxKV-aBg_sRzjlK0b",
+);
+
 const tabPanels = document.querySelectorAll(".tab-panel");
 const menuItems = document.querySelectorAll(".menu-item");
 
@@ -140,6 +147,17 @@ async function loadEmployees() {
         "metric-total-employees",
     );
     const entriesText = document.querySelector("#entries");
+
+    const employeeChannel = supabase
+
+        .channel("worknest")
+        .on("broadcast", { event: "employees-changed" }, () => {
+            console.log("Employee data changed. Reloading...");
+            loadEmployees();
+        })
+        .subscribe((status) => {
+            console.log("Supabase Realtime:", status);
+        });
 
     let rowsHtml = "";
 

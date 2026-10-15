@@ -129,12 +129,11 @@ app.patch("/api/employees", async (req, res) => {});
 async function notifyEmployeesChanged() {
     try {
         const response = await fetch(
-            `${process.env.SUPABASE_URL}/realtime/v1/api/broadcast/worknest/employees-changed`,
+            `${process.env.SUPABASE_URL}/realtime/v1/api/broadcast/worknest/events/employees-changed`,
             {
                 method: "POST",
                 headers: {
                     apikey: process.env.SUPABASE_SECRET_KEY,
-                    Authorization: `Bearer ${process.env.SUPABASE_SECRET_KEY}`,
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
@@ -154,6 +153,7 @@ async function notifyEmployeesChanged() {
         console.error("Realtime notification error:", error);
     }
 }
+
 if (require.main === module) {
     app.listen(PORT, () => {
         console.log(`Server running at http://localhost:${PORT}`);
