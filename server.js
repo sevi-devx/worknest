@@ -124,7 +124,10 @@ app.delete("/api/employees/:id", async (req, res) => {
 app.patch("/api/employees", async (req, res) => {});
 
 // SUPABASE AUTORELOAD
+
 async function notifyEmployeesChanged() {
+    console.log("Sending Supabase broadcast...");
+
     try {
         const response = await fetch(
             `${process.env.SUPABASE_URL}/realtime/v1/api/broadcast/worknest/events/employees-changed`,
@@ -140,12 +143,15 @@ async function notifyEmployeesChanged() {
             },
         );
 
+        const responseText = await response.text();
+
+        console.log("Supabase HTTP status:", response.status);
+        console.log("Supabase response:", responseText);
+
         if (!response.ok) {
-            console.error(
-                "Realtime notification failed:",
-                response.status,
-                await response.text(),
-            );
+            console.error("Realtime notification failed.");
+        } else {
+            console.log("Supabase broadcast sent successfully");
         }
     } catch (error) {
         console.error("Realtime notification error:", error);
