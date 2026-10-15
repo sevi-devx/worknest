@@ -35,6 +35,16 @@ employeeModalBtn.addEventListener("click", () => {
     });
 });
 
+// Delete Employee
+async function deleteEmployee(id) {
+    const response = await fetch(`/api/employees/${id}`, {
+        method: "DELETE",
+    });
+    const result = await response.json();
+
+    await loadEmployees();
+}
+
 // Add Department Overlay
 const departmentModalBtn = document.querySelector(".add-department-modal-btn");
 

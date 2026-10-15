@@ -78,20 +78,39 @@ app.post("/api/employees", async (req, res) => {
     });
 });
 
-// app.delete("/api/employees/:id", async (req, res) => {
-//     const { id } = req.params.id ?? {};
-//
-//     if (!name) {
-//         return res.status(400).json({ message: "We need your name!" });
-//     }
-//
-//     await db.query(
-//         `DELETE FROM employees
-//         WHERE name = ?`,
-//         [name],
-//     );
-// });
-//
+// DELETE
+app.delete("/api/employees/:id", async (req, res) => {
+    const { id } = req.params;
+
+    if (!id || !/^\d+$/.test(id)) {
+        return res.status(400).json({
+            message: "Invalid employee ID",
+        });
+    }
+
+    try {
+        const [result] = await db.query("DELETE FROM employees WHERE id = ?", [
+            id,
+        ]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                message: "Employee not found",
+            });
+        }
+
+        return res.status(200).json({
+            message: "Employee deleted successfully",
+        });
+    } catch (error) {
+        console.error("Failed to delete employee:", error);
+
+        return res.status(500).json({
+            message: "Internal server error",
+        });
+    }
+});
+
 if (require.main === module) {
     app.listen(PORT, () => {
         console.log(`Server running at http://localhost:${PORT}`);
