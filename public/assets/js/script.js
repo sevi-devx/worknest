@@ -148,17 +148,6 @@ async function loadEmployees() {
     );
     const entriesText = document.querySelector("#entries");
 
-    const employeeChannel = supabase
-
-        .channel("worknest")
-        .on("broadcast", { event: "employees-changed" }, () => {
-            console.log("Employee data changed. Reloading...");
-            loadEmployees();
-        })
-        .subscribe((status) => {
-            console.log("Supabase Realtime:", status);
-        });
-
     let rowsHtml = "";
 
     employees.forEach((emp) => {
@@ -170,6 +159,17 @@ async function loadEmployees() {
 
     metricTotalEmployees.innerText = employees.length;
 }
+
+const employeeChannel = supabase
+    .channel("worknest")
+    .on("broadcast", { event: "employees-changed" }, () => {
+        console.log("Employee data changed. Reloading...");
+        loadEmployees();
+    })
+    .subscribe((status) => {
+        console.log("Supabase Realtime:", status);
+    });
+loadEmployees();
 
 function makeRow(emp) {
     let badgeClass = "badge-inactive";
