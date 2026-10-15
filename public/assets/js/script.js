@@ -163,13 +163,18 @@ async function loadEmployees() {
 
 const employeeChannel = supabase
     .channel("worknest")
-    .on("broadcast", { event: "employees-changed" }, () => {
-        console.log("Employee data changed. Reloading...");
+    .on("broadcast", { event: "employees-changed" }, (payload) => {
+        console.log("✅ Employee change received:", payload);
         loadEmployees();
     })
-    .subscribe((status) => {
-        console.log("Supabase Realtime:", status);
+    .subscribe((status, error) => {
+        console.log("Supabase status:", status);
+
+        if (error) {
+            console.error("Supabase subscription error:", error);
+        }
     });
+
 loadEmployees();
 
 function makeRow(emp) {
@@ -217,8 +222,6 @@ function makeRow(emp) {
     </tr>
   `;
 }
-
-loadEmployees();
 
 const toggleBtn = document.getElementById("toggle-sidebar");
 const sidebar = document.getElementById("sidebar");
