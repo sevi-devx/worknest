@@ -45,6 +45,42 @@ async function deleteEmployee(id) {
     await loadEmployees();
 }
 
+// Add and save employee
+async function addNewEmployee() {
+    try {
+        console.log("pressed add new employee");
+        const name = document.getElementById("add-new-employee-name").value;
+        const role = document.getElementById("add-new-employee-role").value;
+        const department = document.getElementById(
+            "add-new-employee-department",
+        ).value;
+        const status = "inactive";
+        const joinDate = currentDate();
+        const response = await fetch(`/api/employees`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: name,
+                role: role,
+                department: department,
+                status: status,
+                joinDate: joinDate,
+            }),
+        });
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.message || "Failed to add employee");
+        }
+
+        await loadEmployees();
+    } catch (error) {
+        console.error("Failed to add employee:", error);
+    }
+}
+
 // Add Department Overlay
 const departmentModalBtn = document.querySelector(".add-department-modal-btn");
 
@@ -64,6 +100,16 @@ departmentModalBtn.addEventListener("click", () => {
 });
 
 const clock = document.getElementById("clock");
+
+function currentDate() {
+    const now = new Date();
+
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+}
 
 function updateClock() {
     const now = new Date();
@@ -94,7 +140,6 @@ async function loadEmployees() {
 }
 
 function makeRow(emp) {
-    // Pick the badge style depending on the status
     let badgeClass = "badge-inactive";
     if (emp.status === "Active") {
         badgeClass = "badge-active";
@@ -112,7 +157,7 @@ function makeRow(emp) {
           <img class="employee-avatar" src="${avatar}" alt="Avatar" />
           <div>
             <span class="employee-name">${emp.name}</span>
-            <span class="employee-email">${emp.role}</span>
+            <span class="employee-role">${emp.role}</span>
           </div>
         </div>
       </td>

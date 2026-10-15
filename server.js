@@ -63,10 +63,19 @@ app.get("/api/employees", async (req, res) => {
 app.post("/api/employees", async (req, res) => {
     const { name, role, department, status, joinDate } = req.body ?? {};
 
-    if (!name) {
-        return res.status(400).json({ message: "We need your name!" });
-    }
+    console.log({
+        name,
+        role,
+        department,
+        status,
+        joinDate,
+    });
 
+    if (!name || !role || !department || !joinDate) {
+        return res.status(400).json({
+            message: "Please fill in all required fields.",
+        });
+    }
     await db.query(
         `INSERT INTO employees (name, role, department_id, status, join_date)
         VALUES (?, ?, (SELECT id FROM departments WHERE name = ?), ?, ?)`,
@@ -110,6 +119,9 @@ app.delete("/api/employees/:id", async (req, res) => {
         });
     }
 });
+
+// UPDATE
+app.patch("/api/employees", async (req, res) => {});
 
 if (require.main === module) {
     app.listen(PORT, () => {

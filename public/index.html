@@ -626,14 +626,7 @@
                             type="text"
                             class="form-control"
                             placeholder="e.g. Jane Doe"
-                        />
-                    </div>
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input
-                            type="email"
-                            class="form-control"
-                            placeholder="e.g. jane@company.com"
+                            id="add-new-employee-name"
                         />
                     </div>
                     <div class="form-group">
@@ -642,11 +635,15 @@
                             type="text"
                             class="form-control"
                             placeholder="e.g. Software Engineer"
+                            id="add-new-employee-role"
                         />
                     </div>
                     <div class="form-group">
                         <label>Department</label>
-                        <select class="form-control">
+                        <select
+                            class="form-control"
+                            id="add-new-employee-department"
+                        >
                             <option>Engineering</option>
                             <option>Design</option>
                             <option>Marketing</option>
@@ -661,7 +658,11 @@
                     >
                         Cancel
                     </button>
-                    <button class="btn-primary" id="save-modal-btn">
+                    <button
+                        class="btn-primary"
+                        id="save-modal-btn"
+                        onclick="addNewEmployee()"
+                    >
                         Save Record
                     </button>
                 </div>
@@ -683,6 +684,7 @@
                             type="text"
                             class="form-control"
                             placeholder="e.g. Engineering"
+                            id="department-name"
                         />
                     </div>
                 </div>
