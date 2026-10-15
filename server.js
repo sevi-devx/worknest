@@ -61,6 +61,9 @@ app.get("/api/employees", async (req, res) => {
 
 // POST
 app.post("/api/employees", async (req, res) => {
+    console.log("WORKNEST POST ROUTE REACHED");
+
+    // Keep the rest of your existing code here
     const { name, role, department, status, joinDate } = req.body ?? {};
 
     console.log({
