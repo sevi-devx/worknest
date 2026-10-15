@@ -31,22 +31,15 @@ app.get("/api/employees", async (req, res) => {
     try {
         const [rows] = await db.query(`
             SELECT
-                employees.id,
-                employees.name,
-                employees.role,
-                departments.name AS department,
-                CASE employees.status
-                    WHEN 'active' THEN 'Active'
-                    WHEN 'inactive' THEN 'Inactive'
-                    ELSE 'On Leave'
-                END AS status,
-                DATE_FORMAT(
-                    employees.join_date, '%b %d, %Y'
-                ) AS joinDate
-            FROM employees
-            LEFT JOIN departments
-                ON departments.id = employees.department_id
-            ORDER BY employees.id
+                e.id,
+                e.name,
+                e.role,
+                d.name AS department,
+                e.status,
+                e.join_date
+            FROM employees e
+            LEFT JOIN departments d ON d.id = e.department_id
+            ORDER BY e.id;
         `);
 
         return res.status(200).json(rows);
