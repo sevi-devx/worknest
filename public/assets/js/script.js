@@ -59,6 +59,7 @@ async function deleteEmployee(id) {
         console.error("Failed to delete employee.");
     }
 }
+window.deleteEmployee = deleteEmployee;
 
 // Add and save employee
 async function addNewEmployee() {
@@ -96,7 +97,7 @@ async function addNewEmployee() {
         console.error("Failed to add employee:", error);
     }
 }
-
+window.addNewEmployee = addNewEmployee;
 // Add Department Overlay
 const departmentModalBtn = document.querySelector(".add-department-modal-btn");
 
