@@ -49,6 +49,7 @@ app.get("/api/employees", async (req, res) => {
             ORDER BY employees.id
         `);
 
+        await notifyEmployeesChanged();
         return res.status(200).json(rows);
     } catch (error) {
         console.error("Failed to fetch employees:", error.message);
@@ -81,7 +82,7 @@ app.post("/api/employees", async (req, res) => {
         VALUES (?, ?, (SELECT id FROM departments WHERE name = ?), ?, ?)`,
         [name, role, department, status || "active", joinDate],
     );
-
+    await notifyEmployeesChanged();
     return res.status(200).json({
         message: "Employee Added!",
     });
@@ -108,6 +109,7 @@ app.delete("/api/employees/:id", async (req, res) => {
             });
         }
 
+        await notifyEmployeesChanged();
         return res.status(200).json({
             message: "Employee deleted successfully",
         });
@@ -123,6 +125,35 @@ app.delete("/api/employees/:id", async (req, res) => {
 // UPDATE
 app.patch("/api/employees", async (req, res) => {});
 
+// SUPABASE AUTORELOAD
+async function notifyEmployeesChanged() {
+    try {
+        const response = await fetch(
+            `${process.env.SUPABASE_URL}/realtime/v1/api/broadcast/worknest/employees-changed`,
+            {
+                method: "POST",
+                headers: {
+                    apikey: process.env.SUPABASE_SECRET_KEY,
+                    Authorization: `Bearer ${process.env.SUPABASE_SECRET_KEY}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    message: "Employee data changed",
+                }),
+            },
+        );
+
+        if (!response.ok) {
+            console.error(
+                "Realtime notification failed:",
+                response.status,
+                await response.text(),
+            );
+        }
+    } catch (error) {
+        console.error("Realtime notification error:", error);
+    }
+}
 if (require.main === module) {
     app.listen(PORT, () => {
         console.log(`Server running at http://localhost:${PORT}`);
