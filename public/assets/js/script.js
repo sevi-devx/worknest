@@ -116,8 +116,6 @@ departmentModalBtn.addEventListener("click", () => {
     });
 });
 
-const clock = document.getElementById("clock");
-
 function currentDate() {
     const now = new Date();
 
@@ -129,11 +127,41 @@ function currentDate() {
 }
 
 function updateClock() {
+    const clock = document.getElementById("clock");
     const now = new Date();
-    const hour = now.getHours() % 12;
-    clock.textContent = hour + ":" + now.getMinutes();
+    let hour = now.getHours();
+    let label = "";
+
+    if (hour === 12) {
+        label = "PM";
+    }
+
+    if (hour >= 13) {
+        hour -= 12;
+        label = "PM";
+    }
+    if (hour === 0) {
+        hour += 12;
+        label = "AM";
+    }
+    clock.textContent =
+        String(hour).padStart(2, "0") +
+        ":" +
+        String(now.getMinutes()).padStart(2, "0") +
+        " " +
+        label;
 }
 
+// string isTime = "";
+
+// if(hour == 12) {
+//     isTime = "PM";
+// }
+//
+// if(hour == 0) {
+//     hour + 12;
+//     isTime = "AM";
+// }
 setInterval(updateClock, 1000);
 
 // REST API
