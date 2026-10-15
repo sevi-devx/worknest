@@ -152,16 +152,6 @@ function updateClock() {
         label;
 }
 
-// string isTime = "";
-
-// if(hour == 12) {
-//     isTime = "PM";
-// }
-//
-// if(hour == 0) {
-//     hour + 12;
-//     isTime = "AM";
-// }
 setInterval(updateClock, 1000);
 
 // REST API
