@@ -13,12 +13,6 @@ const db = mysql.createPool({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-
-    waitForConnections: true,
-    connectionLimit: 2,
-    maxIdle: 1,
-    idleTimeout: 10000,
-    queueLimit: 10,
 });
 
 app.use(cors());
@@ -27,10 +21,12 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 // GET
-app.get("/api/employees", async (req, res) => {
+app.get("/api/employees/:id", async (req, res) => {
     try {
-        const [rows] = await db.query(`
-            SELECT
+        const { id } = req.params;
+
+        const [rows] = await db.query(
+            `SELECT
                 e.id,
                 e.name,
                 e.role,
@@ -38,17 +34,44 @@ app.get("/api/employees", async (req, res) => {
                 e.status,
                 DATE_FORMAT(e.join_date, '%b %d, %Y') AS joinDate
             FROM employees e
-            LEFT JOIN departments d ON d.id = e.department_id
-            ORDER BY e.id;
-        `);
+            LEFT JOIN departments d ON e.department_id = d.id
+            WHERE e.id = ?`,
+            [id],
+        );
 
-        return res.status(200).json(rows);
+        if (!rows.length === 0) {
+            return res.status(404).json({ message: "Employee not found" });
+        }
+
+        res.json(rows[0]);
     } catch (error) {
-        console.error("Failed to fetch employees:", error.message);
+        console.error("Failed to load employees:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
 
-        return res.status(500).json({
-            message: "Failed to fetch employees.",
-        });
+app.get("/api/employees", async (req, res) => {
+    try {
+        const [rows] = await db.query(
+            `SELECT
+                e.id,
+                e.name,
+                e.role,
+                d.name AS department,
+                e.status,
+                DATE_FORMAT(e.join_date, '%b %d, %Y') AS joinDate
+            FROM employees e
+            LEFT JOIN departments d ON e.department_id = d.id WHERE e.id`,
+        );
+
+        if (!rows.length === 0) {
+            return res.status(404).json({ message: "Employee not found" });
+        }
+
+        res.json(rows);
+    } catch (error) {
+        console.error("Failed to load employees:", error);
+        res.status(500).json({ message: "Server error" });
     }
 });
 
@@ -116,8 +139,52 @@ app.delete("/api/employees/:id", async (req, res) => {
     }
 });
 
-// UPDATE
-app.patch("/api/employees", async (req, res) => {});
+// PATCH
+app.patch("/api/employees/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, role, department, status, joinDate } = req.body ?? {};
+        const formattedDate = new Date(joinDate).toLocaleDateString("sv-SE");
+
+        if (!name || !role || !department || !joinDate) {
+            return res.status(400).json({
+                message: "Please fill in all required fields.",
+            });
+        }
+
+        console.log({
+            name,
+            role,
+            department,
+            status,
+            joinDate,
+        });
+
+        const [deptRows] = await db.query(
+            "SELECT id FROM departments WHERE name = ?",
+            [department],
+        );
+        if (deptRows.length === 0) {
+            return res.status(400).json({ message: "Department not found." });
+        }
+
+        const [result] = await db.query(
+            `UPDATE employees
+             SET name = ?, role = ?, department_id = ?, status = ?, join_date = ?
+             WHERE id = ?`,
+            [name, role, deptRows[0].id, status || "active", formattedDate, id],
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "Employee not found" });
+        }
+
+        res.json({ message: "Employee updated!" });
+    } catch (error) {
+        console.error("Failed to update employee:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
 
 // SUPABASE AUTORELOAD
 
