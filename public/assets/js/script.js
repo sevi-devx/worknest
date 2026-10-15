@@ -230,6 +230,8 @@ function updateClock() {
     if (hour === 0) {
         hour += 12;
         label = "AM";
+    } else {
+        label = "AM";
     }
     clock.textContent =
         String(hour).padStart(2, "0") +
