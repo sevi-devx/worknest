@@ -164,7 +164,7 @@ async function loadEmployees() {
 const employeeChannel = supabase
     .channel("worknest")
     .on("broadcast", { event: "employees-changed" }, (payload) => {
-        console.log("✅ Employee change received:", payload);
+        console.log("BROADCAST RECEIVED:", payload);
         loadEmployees();
     })
     .subscribe((status, error) => {

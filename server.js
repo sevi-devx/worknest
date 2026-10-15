@@ -130,7 +130,6 @@ app.patch("/api/employees", async (req, res) => {});
 
 async function notifyEmployeesChanged() {
     console.log("Sending Supabase broadcast...");
-
     try {
         const response = await fetch(
             `${process.env.SUPABASE_URL}/realtime/v1/api/broadcast/worknest/events/employees-changed`,
