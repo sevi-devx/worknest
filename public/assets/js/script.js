@@ -18,9 +18,13 @@ menuItems.forEach((items) => {
 
 // Add New Employee Modal Overlay
 const employeeModalBtn = document.querySelector(".add-new-employee-modal-btn");
+let modalOverlay = document.querySelector(".employee-modal");
+
+function closeModalOverlay() {
+    modalOverlay.classList.remove("active");
+}
 
 employeeModalBtn.addEventListener("click", () => {
-    let modalOverlay = document.querySelector(".employee-modal");
     let cancelBtn = document.querySelector("#employee-cancel-modal-btn");
     let closeBtn = document.querySelector("#employee-close-modal-btn");
 
@@ -37,12 +41,16 @@ employeeModalBtn.addEventListener("click", () => {
 
 // Delete Employee
 async function deleteEmployee(id) {
-    const response = await fetch(`/api/employees/${id}`, {
-        method: "DELETE",
-    });
-    const result = await response.json();
+    try {
+        const response = await fetch(`/api/employees/${id}`, {
+            method: "DELETE",
+        });
+        const result = await response.json();
 
-    await loadEmployees();
+        await loadEmployees();
+    } catch (error) {
+        console.error("Failed to delete employee.");
+    }
 }
 
 // Add and save employee
@@ -75,6 +83,7 @@ async function addNewEmployee() {
             throw new Error(result.message || "Failed to add employee");
         }
 
+        closeModalOverlay();
         await loadEmployees();
     } catch (error) {
         console.error("Failed to add employee:", error);
@@ -123,11 +132,14 @@ setInterval(updateClock, 1000);
 
 const API_URL = "/api/employees";
 const tbody = document.getElementById("employee-table-body");
-const entriesText = document.querySelector("#entries");
 
 async function loadEmployees() {
     const response = await fetch(API_URL);
     const employees = await response.json();
+    const metricTotalEmployees = document.getElementById(
+        "metric-total-employees",
+    );
+    const entriesText = document.querySelector("#entries");
 
     let rowsHtml = "";
 
@@ -137,6 +149,8 @@ async function loadEmployees() {
 
     tbody.innerHTML = rowsHtml;
     entriesText.innerText = `Showing ${employees.length} entries`;
+
+    metricTotalEmployees.innerText = employees.length;
 }
 
 function makeRow(emp) {
