@@ -129,34 +129,35 @@ app.patch("/api/employees", async (req, res) => {});
 // SUPABASE AUTORELOAD
 
 async function notifyEmployeesChanged() {
-    console.log("Sending Supabase broadcast...");
-    try {
-        const response = await fetch(
-            `${process.env.SUPABASE_URL}/realtime/v1/api/broadcast/worknest/events/employees-changed`,
-            {
-                method: "POST",
-                headers: {
-                    apikey: process.env.SUPABASE_SECRET_KEY,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    message: "Employee data changed",
-                }),
-            },
-        );
+    const url = `${process.env.SUPABASE_URL}/realtime/v1/api/broadcast/worknest/events/employees-changed`;
 
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                apikey: process.env.SUPABASE_SECRET_KEY,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                message: "Employee data changed",
+            }),
+        });
+
+        const contentType = response.headers.get("content-type") || "";
         const responseText = await response.text();
 
-        console.log("Supabase HTTP status:", response.status);
-        console.log("Supabase response:", responseText);
+        console.log("Broadcast URL:", url);
+        console.log("Broadcast HTTP status:", response.status);
+        console.log("Broadcast content type:", contentType);
 
-        if (!response.ok) {
-            console.error("Realtime notification failed.");
-        } else {
-            console.log("Supabase broadcast sent successfully");
+        if (!response.ok || !contentType.includes("application/json")) {
+            console.error("Broadcast failed:", responseText.slice(0, 500));
+            return;
         }
+
+        console.log("Broadcast request accepted.");
     } catch (error) {
-        console.error("Realtime notification error:", error);
+        console.error("Broadcast request error:", error);
     }
 }
 
