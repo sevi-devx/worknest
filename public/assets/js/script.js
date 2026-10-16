@@ -94,81 +94,80 @@ function toMySqlDate(value) {
     return date.toISOString().slice(0, 10);
 }
 
+document.querySelector("#employee-table-body").addEventListener("click", () => {
+    let modalOverlay = document.querySelector(".edit-employee-modal");
+    const cancelBtn = document.querySelector("#edit-employee-cancel-modal-btn");
+    const closeBtn = document.querySelector("#edit-employee-close-modal-btn");
+
+    function closeModalOverlay() {
+        modalOverlay.classList.remove("active");
+    }
+
+    modalOverlay.classList.add("active");
+    closeBtn.addEventListener("click", () => {
+        closeModalOverlay();
+    });
+
+    cancelBtn.addEventListener("click", () => {
+        closeModalOverlay();
+    });
+});
+
 async function editEmployee(id) {
     try {
-        const editModalBtn = document.querySelector(".edit-modal-btn");
-
-        editModalBtn.addEventListener("click", () => {
-            let modalOverlay = document.querySelector(".edit-employee-modal");
-            const cancelBtn = document.querySelector(
-                "#edit-employee-cancel-modal-btn",
-            );
-            const closeBtn = document.querySelector(
-                "#edit-employee-close-modal-btn",
-            );
-
-            function closeModalOverlay() {
-                modalOverlay.classList.remove("active");
-            }
-
-            modalOverlay.classList.add("active");
-            closeBtn.addEventListener("click", () => {
-                closeModalOverlay();
-            });
-
-            cancelBtn.addEventListener("click", () => {
-                closeModalOverlay();
-            });
-        });
-
         const response = await fetch(`/api/employees/${id}`, {
             method: "GET",
         });
         const result = await response.json();
 
-        const editEmployeeName = document.getElementById("edit-employee-name");
-        const editEmployeeRole = document.getElementById("edit-employee-role");
-        const editEmployeeDepartment = document.getElementById(
-            "edit-employee-department",
-        );
-        const editEmployeeStatus = document.getElementById(
-            "edit-employee-status",
-        );
-        const editEmployeeJoinDate = document.getElementById(
-            "edit-employee-join-date",
-        );
-
-        editEmployeeName.value = result.name;
-        editEmployeeRole.value = result.role;
-        editEmployeeDepartment.value = result.department;
-        editEmployeeStatus.value = result.status;
-        editEmployeeJoinDate.value = result.joinDate;
-
-        // Save Edit
-        const saveEditBtn = document.getElementById("edit-employee-save-btn");
-
-        saveEditBtn.addEventListener("click", async () => {
-            const responseSave = await fetch(`/api/employees/${id}`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    name: editEmployeeName.value,
-                    role: editEmployeeRole.value,
-                    department: editEmployeeDepartment.value,
-                    status: editEmployeeStatus.value,
-                    joinDate: editEmployeeJoinDate.value,
-                }),
-            });
-
-            await loadEmployees();
-        });
+        document.getElementById("edit-employee-id").value = result.id;
+        document.getElementById("edit-employee-name").value = result.name;
+        document.getElementById("edit-employee-role").value = result.role;
+        document.getElementById("edit-employee-department").value =
+            result.department;
+        document.getElementById("edit-employee-status").value = result.status;
+        document.getElementById("edit-employee-join-date").value =
+            result.joinDate;
     } catch (error) {
         console.error("Failed to edit employee");
     }
 }
 window.editEmployee = editEmployee;
+
+const saveBtn = document.querySelector("#edit-employee-save-btn");
+
+saveBtn.addEventListener("click", async () => {
+    const id = document.getElementById("edit-employee-id").value;
+    const name = document.getElementById("edit-employee-name").value;
+    const role = document.getElementById("edit-employee-role").value;
+    const department = document.getElementById(
+        "edit-employee-department",
+    ).value;
+    const status = document.getElementById("edit-employee-status").value;
+    const joinDate = document.getElementById("edit-employee-join-date").value;
+
+    const response = await fetch(`/api/employees/${id}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+            name: name,
+            role: role,
+            department: department,
+            status: status,
+            joinDate: joinDate,
+        }),
+    });
+
+    const modalOverlay = document.querySelector(".edit-employee-modal");
+
+    modalOverlay.classList.remove("active");
+
+    const result = await response.json();
+    await loadEmployees();
+});
 
 // Delete Employee
 async function deleteEmployee(id) {
