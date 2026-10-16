@@ -5,8 +5,8 @@ const supabase = createClient(
     "sb_publishable_VMFaAijOxAfxW7uxKV-aBg_sRzjlK0b",
 );
 
-const tabPanels = document.querySelectorAll(".tab-panel");
 const menuItems = document.querySelectorAll(".menu-item");
+const tabPanels = document.querySelectorAll(".tab-panel");
 
 menuItems.forEach((items) => {
     items.addEventListener("click", (event) => {
