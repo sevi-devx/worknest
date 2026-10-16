@@ -2,7 +2,7 @@
 
 A web-based **Employee Management System** for HR teams. WorkNest brings employee records, departments, attendance, and payroll together in a single dashboard, backed by a Node.js/Express API and a MySQL database.
 
-**Live demo:** [employee-management-system-two-ebon.vercel.app](https://employee-management-system-two-ebon.vercel.app)
+**Live demo:** [WORKNEST](https://worknest-tan.vercel.app)
 
 ---
 
