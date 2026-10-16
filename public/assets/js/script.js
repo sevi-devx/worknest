@@ -221,13 +221,10 @@ function updateClock() {
 
     if (hour === 12) {
         label = "PM";
-    }
-
-    if (hour >= 13) {
+    } else if (hour >= 13) {
         hour -= 12;
         label = "PM";
-    }
-    if (hour === 0) {
+    } else if (hour === 0) {
         hour += 12;
         label = "AM";
     } else {
