@@ -23,22 +23,6 @@ menuItems.forEach((items) => {
     });
 });
 
-// Add New Employee Modal Overlay
-// const employeeModalBtn = document.querySelector(".add-new-employee-modal-btn");
-//
-// employeeModalBtn.addEventListener("click", () => {
-//     let cancelBtn = document.querySelector("#employee-cancel-modal-btn");
-//     let closeBtn = document.querySelector("#employee-close-modal-btn");
-//
-//     closeBtn.addEventListener("click", () => {
-//         modalOverlay.classList.remove("active");
-//     });
-//
-//     cancelBtn.addEventListener("click", () => {
-//         modalOverlay.classList.remove("active");
-//     });
-// });
-
 const modalOverlay = document.querySelector(".modal-overlay");
 const addOverlay = document.querySelector;
 
