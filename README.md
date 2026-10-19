@@ -99,16 +99,6 @@ Once running, use the sidebar to move between sections:
 6. **Settings** to update company details and security options
 
 
-## Contributing
-
-Contributions are welcome.
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/your-feature`)
-3. Commit your changes (`git commit -m "Add your feature"`)
-4. Push to the branch (`git push origin feature/your-feature`)
-5. Open a pull request
-
 ## License
 
 This project is licensed under the ISC License.
