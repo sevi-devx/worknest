@@ -614,13 +614,13 @@
         </div>
 
         <!-- Modal Window -->
-        <div class="modal-overlay employee-modal">
+        <div class="modal-overlay" data-tab="add-employee">
             <div class="modal-box">
                 <div class="modal-header">
                     <h3 class="card-title" id="modal-title">
                         Add New Employee
                     </h3>
-                    <button id="employee-close-modal-btn">
+                    <button id="employee-close-modal-btn" data-action="close">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
@@ -660,13 +660,14 @@
                     <button
                         class="btn-secondary"
                         id="employee-cancel-modal-btn"
+                        data-action="cancel"
                     >
                         Cancel
                     </button>
                     <button
                         class="btn-primary"
                         id="save-modal-btn"
-                        onclick="addNewEmployee()"
+                        data-action="save"
                     >
                         Save Record
                     </button>
@@ -707,12 +708,15 @@
         <!--     </div> -->
         <!-- </div> -->
 
-        <div class="modal-overlay edit-employee-modal">
+        <div class="modal-overlay" data-tab="edit">
             <input type="hidden" id="edit-employee-id" />
             <div class="modal-box">
                 <div class="modal-header">
                     <h3 class="card-title" id="modal-title">Edit Employee</h3>
-                    <button id="edit-employee-close-modal-btn">
+                    <button
+                        id="edit-employee-close-modal-btn"
+                        data-action="close"
+                    >
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
@@ -770,10 +774,15 @@
                     <button
                         class="btn-secondary"
                         id="edit-employee-cancel-modal-btn"
+                        data-action="cancel"
                     >
                         Cancel
                     </button>
-                    <button class="btn-primary" id="edit-employee-save-btn">
+                    <button
+                        class="btn-primary"
+                        id="edit-save-modal-btn"
+                        data-action="save"
+                    >
                         Save Record
                     </button>
                 </div>

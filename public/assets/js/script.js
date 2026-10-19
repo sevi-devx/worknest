@@ -24,39 +24,81 @@ menuItems.forEach((items) => {
 });
 
 // Add New Employee Modal Overlay
-const employeeModalBtn = document.querySelector(".add-new-employee-modal-btn");
-let modalOverlay = document.querySelector(".employee-modal");
+// const employeeModalBtn = document.querySelector(".add-new-employee-modal-btn");
+//
+// employeeModalBtn.addEventListener("click", () => {
+//     let cancelBtn = document.querySelector("#employee-cancel-modal-btn");
+//     let closeBtn = document.querySelector("#employee-close-modal-btn");
+//
+//     closeBtn.addEventListener("click", () => {
+//         modalOverlay.classList.remove("active");
+//     });
+//
+//     cancelBtn.addEventListener("click", () => {
+//         modalOverlay.classList.remove("active");
+//     });
+// });
 
-function closeModalOverlay() {
-    modalOverlay.classList.remove("active");
+const modalOverlay = document.querySelector(".modal-overlay");
+const addOverlay = document.querySelector;
+
+function openModal(mode) {
+    const overlay = document.querySelector(
+        `.modal-overlay[data-tab="${mode}"]`,
+    );
+    overlay.classList.add("active");
 }
 
-employeeModalBtn.addEventListener("click", () => {
-    let cancelBtn = document.querySelector("#employee-cancel-modal-btn");
-    let closeBtn = document.querySelector("#employee-close-modal-btn");
+function closeModal() {
+    document
+        .querySelectorAll(".modal-overlay.active")
+        .forEach((overlay) => overlay.classList.remove("active"));
+}
 
-    modalOverlay.classList.add("active");
+const addEmployeeModalBtn = document.querySelector(
+    ".add-new-employee-modal-btn",
+);
 
-    closeBtn.addEventListener("click", () => {
-        modalOverlay.classList.remove("active");
+if (addEmployeeModalBtn) {
+    addEmployeeModalBtn.addEventListener("click", () => {
+        openModal("add-employee");
     });
+}
 
-    cancelBtn.addEventListener("click", () => {
-        modalOverlay.classList.remove("active");
-    });
+document.addEventListener("click", (event) => {
+    const button = event.target.closest(".modal-overlay [data-action]");
+
+    if (!button) return;
+
+    const action = button.dataset.action;
+    const mode = button.closest(".modal-overlay").dataset.tab;
+
+    if (action === "close") {
+        console.log("close was pressed");
+        closeModal("add-employee");
+        closeModal("edit");
+    } else if (action === "cancel") {
+        console.log("cancel was pressed");
+        closeModal("add-employee");
+        closeModal("edit");
+    } else if (action === "save") {
+        if (mode === "add-employee") {
+            addNewEmployee();
+        } else if (mode === "edit") {
+            const id = document.getElementById("edit-employee-id").value;
+            editEmployee(id);
+        }
+        closeModal();
+    }
 });
 
-// Add and save employee
 async function addNewEmployee() {
     try {
-        closeModalOverlay();
-        console.log("pressed add new employee");
         const name = document.getElementById("add-new-employee-name").value;
         const role = document.getElementById("add-new-employee-role").value;
         const department = document.getElementById(
             "add-new-employee-department",
         ).value;
-        document.getElementById("add-new-employee-department").value = "";
         document.getElementById("add-new-employee-name").value = "";
         document.getElementById("add-new-employee-role").value = "";
 
@@ -83,38 +125,40 @@ async function addNewEmployee() {
 
         await loadEmployees();
     } catch (error) {
-        console.error("Failed to add employee:", error);
+        console.error("Failed to add new employee", error);
     }
 }
-window.addNewEmployee = addNewEmployee;
 
 // Edit and save employee Overlay
+
+const tbody = document.getElementById("employee-table-body");
+
+tbody.addEventListener("click", (event) => {
+    const button = event.target.closest(".btn-action");
+
+    if (!button) return;
+
+    const id = button.dataset.id;
+    const action = button.dataset.action;
+
+    if (action === "delete") {
+        deleteEmployee(id);
+    } else if (action === "edit") {
+        console.log("edit employee pressed");
+        getEmployeeDetails(id);
+        openModal("edit");
+    }
+});
+
+//
 function toMySqlDate(value) {
     const date = new Date(value);
     return date.toISOString().slice(0, 10);
 }
 
-document.querySelector("#employee-table-body").addEventListener("click", () => {
-    let modalOverlay = document.querySelector(".edit-employee-modal");
-    const cancelBtn = document.querySelector("#edit-employee-cancel-modal-btn");
-    const closeBtn = document.querySelector("#edit-employee-close-modal-btn");
-
-    function closeModalOverlay() {
-        modalOverlay.classList.remove("active");
-    }
-
-    modalOverlay.classList.add("active");
-    closeBtn.addEventListener("click", () => {
-        closeModalOverlay();
-    });
-
-    cancelBtn.addEventListener("click", () => {
-        closeModalOverlay();
-    });
-});
-
-async function editEmployee(id) {
+async function getEmployeeDetails(id) {
     try {
+        console.log("successfully extracted employee details.");
         const response = await fetch(`/api/employees/${id}`, {
             method: "GET",
         });
@@ -132,12 +176,9 @@ async function editEmployee(id) {
         console.error("Failed to edit employee");
     }
 }
-window.editEmployee = editEmployee;
 
-const saveBtn = document.querySelector("#edit-employee-save-btn");
-
-saveBtn.addEventListener("click", async () => {
-    const id = document.getElementById("edit-employee-id").value;
+async function editEmployee(id) {
+    console.log("saving edit employee");
     const name = document.getElementById("edit-employee-name").value;
     const role = document.getElementById("edit-employee-role").value;
     const department = document.getElementById(
@@ -161,13 +202,9 @@ saveBtn.addEventListener("click", async () => {
         }),
     });
 
-    const modalOverlay = document.querySelector(".edit-employee-modal");
-
-    modalOverlay.classList.remove("active");
-
     const result = await response.json();
     await loadEmployees();
-});
+}
 
 // Delete Employee
 async function deleteEmployee(id) {
@@ -182,25 +219,24 @@ async function deleteEmployee(id) {
         console.error("Failed to delete employee.");
     }
 }
-window.deleteEmployee = deleteEmployee;
 
 // Add Department Overlay
 const departmentModalBtn = document.querySelector(".add-department-modal-btn");
 
-departmentModalBtn.addEventListener("click", () => {
-    let modalOverlay = document.querySelector(".department-modal");
-    let cancelBtn = document.querySelector("#department-cancel-modal-btn");
-    let closeBtn = document.querySelector("#department-close-modal-btn");
-
-    modalOverlay.classList.add("active");
-    closeBtn.addEventListener("click", () => {
-        modalOverlay.classList.remove("active");
-    });
-
-    cancelBtn.addEventListener("click", () => {
-        modalOverlay.classList.remove("active");
-    });
-});
+// departmentModalBtn.addEventListener("click", () => {
+//     let modalOverlay = document.querySelector(".department-modal");
+//     let cancelBtn = document.querySelector("#department-cancel-modal-btn");
+//     let closeBtn = document.querySelector("#department-close-modal-btn");
+//
+//     modalOverlay.classList.add("active");
+//     closeBtn.addEventListener("click", () => {
+//         modalOverlay.classList.remove("active");
+//     });
+//
+//     cancelBtn.addEventListener("click", () => {
+//         modalOverlay.classList.remove("active");
+//     });
+// });
 
 function currentDate() {
     const now = new Date();
@@ -242,7 +278,6 @@ setInterval(updateClock, 1000);
 // REST API
 
 const API_URL = "/api/employees";
-const tbody = document.getElementById("employee-table-body");
 
 async function loadEmployees() {
     const response = await fetch(API_URL);
@@ -282,7 +317,7 @@ loadEmployees();
 
 function makeRow(emp) {
     let badgeClass = "badge-inactive";
-    if (emp.status === "Active") {
+    if (emp.status === "active") {
         badgeClass = "badge-active";
     } else if (emp.status === "On Leave") {
         badgeClass = "badge-leave";
@@ -312,12 +347,10 @@ function makeRow(emp) {
       <td>${emp.joinDate}</td>
       <td>
         <div class="actions-cell" style="justify-content: flex-end;">
-          <button class="btn-action edit edit-modal-btn" title="Edit"
-                  onclick="editEmployee(${emp.id})">
+          <button class="btn-action edit-modal-btn" title="Edit" data-id="${emp.id}" data-action="edit">
             <i class="fa-regular fa-pen-to-square"></i>
           </button>
-          <button class="btn-action delete" title="Delete"
-                  onclick="deleteEmployee(${emp.id})">
+          <button class="btn-action delete" title="Delete" data-id="${emp.id}" data-action="delete">
             <i class="fa-regular fa-trash-can"></i>
           </button>
         </div>
