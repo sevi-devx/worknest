@@ -68,7 +68,7 @@
             <div class="sidebar-footer">
                 <div class="user-card-mini">
                     <img
-                        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100"
+                        src="#"
                         alt="Admin Avatar"
                         onerror="
                             this.src =
@@ -76,8 +76,8 @@
                         "
                     />
                     <div class="user-card-info">
-                        <div class="user-card-name">Sarah Jenkins</div>
-                        <div class="user-card-role">HR Admin</div>
+                        <div class="user-card-name">Your Name</div>
+                        <div class="user-card-role">Your Role</div>
                     </div>
                     <button title="Logout" style="color: var(--text-muted)">
                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -599,6 +599,8 @@
         </div>
 
         <!-- Modal Window -->
+
+        <!-- Employee Modals -->
         <div class="modal-overlay" data-tab="add-employee">
             <div class="modal-box">
                 <div class="modal-header">
@@ -740,6 +742,135 @@
                 </div>
             </div>
         </div>
+
+        <!-- Department Modals -->
+
+        <div class="modal-overlay" data-tab="add-department">
+            <div class="modal-box">
+                <div class="modal-header">
+                    <h3 class="card-title" id="modal-title">
+                        Add New Department
+                    </h3>
+                    <button id="employee-close-modal-btn" data-action="close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Department Name</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            placeholder="e.g. Jane Doe"
+                            id="add-new-employee-name"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label>Head</label>
+                        <!-- Use select -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        class="btn-secondary"
+                        id="employee-cancel-modal-btn"
+                        data-action="cancel"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        class="btn-primary"
+                        id="save-modal-btn"
+                        data-action="save"
+                    >
+                        Save Record
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-overlay" data-tab="edit">
+            <input type="hidden" id="edit-employee-id" />
+            <div class="modal-box">
+                <div class="modal-header">
+                    <h3 class="card-title" id="modal-title">Edit Employee</h3>
+                    <button
+                        id="edit-employee-close-modal-btn"
+                        data-action="close"
+                    >
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Employee Name</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            placeholder="e.g. Engineering"
+                            id="edit-employee-name"
+                        />
+                        <div class="form-group">
+                            <label>Employee Role</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                placeholder="e.g. Software Engineer"
+                                id="edit-employee-role"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label>Edit Employee Department</label>
+                            <select
+                                class="form-control"
+                                id="edit-employee-department"
+                            >
+                                <option>Engineering</option>
+                                <option>Design</option>
+                                <option>Marketing</option>
+                                <option>Human Resources</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Status Role</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                placeholder="e.g. Software Engineer"
+                                id="edit-employee-status"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label>Join Date Role</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                placeholder="e.g. Software Engineer"
+                                id="edit-employee-join-date"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        class="btn-secondary"
+                        id="edit-employee-cancel-modal-btn"
+                        data-action="cancel"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        class="btn-primary"
+                        id="edit-save-modal-btn"
+                        data-action="save"
+                    >
+                        Save Record
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- End of modal overlay -->
         <div class="sidebar-overlay" id="sidebar-overlay"></div>
         <script type="module" src="assets/js/script.js"></script>
     </body>

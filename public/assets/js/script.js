@@ -204,24 +204,6 @@ async function deleteEmployee(id) {
     }
 }
 
-// Add Department Overlay
-const departmentModalBtn = document.querySelector(".add-department-modal-btn");
-
-// departmentModalBtn.addEventListener("click", () => {
-//     let modalOverlay = document.querySelector(".department-modal");
-//     let cancelBtn = document.querySelector("#department-cancel-modal-btn");
-//     let closeBtn = document.querySelector("#department-close-modal-btn");
-//
-//     modalOverlay.classList.add("active");
-//     closeBtn.addEventListener("click", () => {
-//         modalOverlay.classList.remove("active");
-//     });
-//
-//     cancelBtn.addEventListener("click", () => {
-//         modalOverlay.classList.remove("active");
-//     });
-// });
-
 function currentDate() {
     const now = new Date();
 
