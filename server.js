@@ -20,7 +20,7 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, "public")));
 
-// GET
+// GET Employees
 app.get("/api/employees/:id", async (req, res) => {
     try {
         const { id } = req.params;
@@ -75,7 +75,7 @@ app.get("/api/employees", async (req, res) => {
     }
 });
 
-// POST
+// POST Employees
 app.post("/api/employees", async (req, res) => {
     console.log("WORKNEST POST ROUTE REACHED");
 
@@ -106,7 +106,7 @@ app.post("/api/employees", async (req, res) => {
     });
 });
 
-// DELETE
+// DELETE Employees
 app.delete("/api/employees/:id", async (req, res) => {
     const { id } = req.params;
 
@@ -139,7 +139,7 @@ app.delete("/api/employees/:id", async (req, res) => {
     }
 });
 
-// PATCH
+// PATCH Employees
 app.patch("/api/employees/:id", async (req, res) => {
     try {
         const { id } = req.params;
