@@ -45,6 +45,7 @@ const addEmployeeModalBtn = document.querySelector(
 
 if (addEmployeeModalBtn) {
     addEmployeeModalBtn.addEventListener("click", () => {
+        loadDepartments();
         openModal("add-employee");
     });
 }
@@ -58,11 +59,9 @@ document.addEventListener("click", (event) => {
     const mode = button.closest(".modal-overlay").dataset.tab;
 
     if (action === "close") {
-        console.log("close was pressed");
         closeModal("add-employee");
         closeModal("edit");
     } else if (action === "cancel") {
-        console.log("cancel was pressed");
         closeModal("add-employee");
         closeModal("edit");
     } else if (action === "save") {
@@ -201,6 +200,34 @@ async function deleteEmployee(id) {
         await loadEmployees();
     } catch (error) {
         console.error("Failed to delete employee.");
+    }
+}
+
+// Select option for departmnets
+
+async function loadDepartments() {
+    console.log("loadDepartments() started");
+    const selectDepartments = document.getElementById(
+        "add-new-employee-department",
+    );
+    try {
+        const response = await fetch(`/api/departments`, {
+            method: "GET",
+        });
+        const departments = await response.json();
+
+        departments.forEach((dep) => {
+            const options = document.createElement("option");
+
+            options.value = dep.id;
+            options.textContent = dep.name;
+
+            selectDepartments.appendChild(options);
+        });
+
+        console.log(departments);
+    } catch (error) {
+        console.error("Failed to load departments", error);
     }
 }
 

@@ -186,6 +186,23 @@ app.patch("/api/employees/:id", async (req, res) => {
     }
 });
 
+// GET Department
+app.get("/api/departments", async (req, res) => {
+    try {
+        const [rows] = await db.query(`
+            SELECT
+                d.id,
+                d.name
+            FROM departments d;
+        `);
+
+        res.json(rows);
+    } catch (error) {
+        console.error("Failed to GET departments", error);
+        res.status(500).json({ error: "Failed to fetch departmens" });
+    }
+});
+
 // SUPABASE AUTORELOAD
 
 async function notifyEmployeesChanged() {
