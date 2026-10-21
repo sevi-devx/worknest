@@ -44,8 +44,8 @@ const addEmployeeModalBtn = document.querySelector(
 );
 
 if (addEmployeeModalBtn) {
-    addEmployeeModalBtn.addEventListener("click", () => {
-        loadDepartments();
+    addEmployeeModalBtn.addEventListener("click", async () => {
+        await loadDepartments();
         openModal("add-employee");
     });
 }
@@ -116,7 +116,7 @@ async function addNewEmployee() {
 
 const tbody = document.getElementById("employee-table-body");
 
-tbody.addEventListener("click", (event) => {
+tbody.addEventListener("click", async (event) => {
     const button = event.target.closest(".btn-action");
 
     if (!button) return;
@@ -127,9 +127,9 @@ tbody.addEventListener("click", (event) => {
     if (action === "delete") {
         deleteEmployee(id);
     } else if (action === "edit") {
-        console.log("edit employee pressed");
-        getEmployeeDetails(id);
         openModal("edit");
+        await loadDepartments();
+        await getEmployeeDetails(id);
     }
 });
 
@@ -150,13 +150,17 @@ async function getEmployeeDetails(id) {
         document.getElementById("edit-employee-id").value = result.id;
         document.getElementById("edit-employee-name").value = result.name;
         document.getElementById("edit-employee-role").value = result.role;
-        document.getElementById("edit-employee-department").value =
-            result.department;
+        console.log(
+            (document.getElementById("departments-employee").value =
+                result.departmentId),
+        );
+        document.getElementById("departments-employee").value =
+            result.departmentId;
         document.getElementById("edit-employee-status").value = result.status;
         document.getElementById("edit-employee-join-date").value =
             result.joinDate;
     } catch (error) {
-        console.error("Failed to edit employee");
+        console.error("Failed to edit employee", error);
     }
 }
 
@@ -164,9 +168,7 @@ async function editEmployee(id) {
     console.log("saving edit employee");
     const name = document.getElementById("edit-employee-name").value;
     const role = document.getElementById("edit-employee-role").value;
-    const department = document.getElementById(
-        "edit-employee-department",
-    ).value;
+    const department = document.getElementById("departments-employee").value;
     const status = document.getElementById("edit-employee-status").value;
     const joinDate = document.getElementById("edit-employee-join-date").value;
 
@@ -206,28 +208,33 @@ async function deleteEmployee(id) {
 // Select option for departmnets
 
 async function loadDepartments() {
-    console.log("loadDepartments() started");
-    const selectDepartments = document.getElementById(
-        "add-new-employee-department",
-    );
+    const selectIds = ["add-new-employee-department", "departments-employee"];
+
     try {
-        const response = await fetch(`/api/departments`, {
-            method: "GET",
-        });
+        const response = await fetch("/api/departments");
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch departments");
+        }
+
         const departments = await response.json();
 
-        departments.forEach((dep) => {
-            const options = document.createElement("option");
+        selectIds.forEach((id) => {
+            const select = document.getElementById(id);
 
-            options.value = dep.id;
-            options.textContent = dep.name;
+            if (!select) return;
 
-            selectDepartments.appendChild(options);
+            select.innerHTML = '<option value="">Select Department</option>';
+
+            departments.forEach((dep) => {
+                const option = document.createElement("option");
+                option.value = dep.id;
+                option.textContent = dep.name;
+                select.appendChild(option);
+            });
         });
-
-        console.log(departments);
     } catch (error) {
-        console.error("Failed to load departments", error);
+        console.error("Failed to load departments:", error);
     }
 }
 

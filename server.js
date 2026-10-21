@@ -30,9 +30,9 @@ app.get("/api/employees/:id", async (req, res) => {
                 e.id,
                 e.name,
                 e.role,
-                d.name AS department,
+                e.department_id AS departmentId,
                 e.status,
-                DATE_FORMAT(e.join_date, '%b %d, %Y') AS joinDate
+                DATE_FORMAT(e.join_date, '%Y-%m-%d') AS joinDate
             FROM employees e
             LEFT JOIN departments d ON e.department_id = d.id
             WHERE e.id = ?`,
