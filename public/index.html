@@ -858,8 +858,77 @@
             </div>
         </div>
 
+        <div class="modal-overlay" data-tab="add-department">
+            <div class="modal-box">
+                <div class="modal-header">
+                    <h3 class="card-title" id="modal-title">
+                        Add Department Employee
+                    </h3>
+                    <button
+                        id="add-department-close-modal-btn"
+                        data-action="close"
+                    >
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Department Name</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            placeholder="e.g. Engineering"
+                            id="add-department-name"
+                        />
+                        <div class="form-group">
+                            <label>Department Role</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                placeholder="e.g. Software Engineer"
+                                id="add-department-role"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label>Head</label>
+                            <select class="form-control" id="head-department">
+                                <option value="">Select Employee</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Status Role</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                placeholder="e.g. Software Engineer"
+                                id="edit-employee-status"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        class="btn-secondary"
+                        id="add-department-cancel-modal-btn"
+                        data-action="cancel"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        class="btn-primary"
+                        id="add-department-save-modal-btn"
+                        data-action="save"
+                    >
+                        Save Record
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- End of modal overlay -->
         <div class="sidebar-overlay" id="sidebar-overlay"></div>
         <script type="module" src="assets/js/script.js"></script>
     </body>
 </html>
+
+''
