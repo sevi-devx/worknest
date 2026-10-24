@@ -536,6 +536,7 @@ tr:hover td {
 }
 
 .badge {
+    width: fit-content;
     padding: 0.25rem 0.65rem;
     border-radius: 50px;
     font-size: 0.75rem;
