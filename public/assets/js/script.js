@@ -1,5 +1,10 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+document.addEventListener("DOMContentLoaded", async () => {
+    await loadDepartments();
+    await loadEmployees();
+});
+
 const supabase = createClient(
     "https://yyrsdeildevgexbueony.supabase.co",
     "sb_publishable_VMFaAijOxAfxW7uxKV-aBg_sRzjlK0b",
@@ -44,8 +49,8 @@ const addEmployeeModalBtn = document.querySelector(
 );
 
 if (addEmployeeModalBtn) {
-    addEmployeeModalBtn.addEventListener("click", async () => {
-        await loadDepartments();
+    addEmployeeModalBtn.addEventListener("click", () => {
+        loadDepartments();
         openModal("add-employee");
     });
 }
@@ -116,7 +121,7 @@ async function addNewEmployee() {
 
 const tbody = document.getElementById("employee-table-body");
 
-tbody.addEventListener("click", async (event) => {
+tbody.addEventListener("click", (event) => {
     const button = event.target.closest(".btn-action");
 
     if (!button) return;
@@ -127,9 +132,9 @@ tbody.addEventListener("click", async (event) => {
     if (action === "delete") {
         deleteEmployee(id);
     } else if (action === "edit") {
+        console.log("edit employee pressed");
+        getEmployeeDetails(id);
         openModal("edit");
-        await loadDepartments();
-        await getEmployeeDetails(id);
     }
 });
 
@@ -150,17 +155,10 @@ async function getEmployeeDetails(id) {
         document.getElementById("edit-employee-id").value = result.id;
         document.getElementById("edit-employee-name").value = result.name;
         document.getElementById("edit-employee-role").value = result.role;
-        console.log(
-            (document.getElementById("departments-employee").value =
-                result.departmentId),
-        );
-        document.getElementById("departments-employee").value =
-            result.departmentId;
-        document.getElementById("edit-employee-status").value = result.status;
-        document.getElementById("edit-employee-join-date").value =
-            result.joinDate;
+        document.getElementById("edit-employee-department").value =
+            result.department;
     } catch (error) {
-        console.error("Failed to edit employee", error);
+        console.error("Failed to edit employee");
     }
 }
 
@@ -168,9 +166,9 @@ async function editEmployee(id) {
     console.log("saving edit employee");
     const name = document.getElementById("edit-employee-name").value;
     const role = document.getElementById("edit-employee-role").value;
-    const department = document.getElementById("departments-employee").value;
-    const status = document.getElementById("edit-employee-status").value;
-    const joinDate = document.getElementById("edit-employee-join-date").value;
+    const department = document.getElementById(
+        "edit-employee-department",
+    ).value;
 
     const response = await fetch(`/api/employees/${id}`, {
         method: "PATCH",
@@ -182,8 +180,6 @@ async function editEmployee(id) {
             name: name,
             role: role,
             department: department,
-            status: status,
-            joinDate: joinDate,
         }),
     });
 
@@ -208,33 +204,30 @@ async function deleteEmployee(id) {
 // Select option for departmnets
 
 async function loadDepartments() {
-    const selectIds = ["add-new-employee-department", "departments-employee"];
-
+    console.log("loadDepartments() started");
+    const selectDepartments = document.querySelectorAll(
+        ".departments-employee",
+    );
     try {
-        const response = await fetch("/api/departments");
-
-        if (!response.ok) {
-            throw new Error("Failed to fetch departments");
-        }
-
+        const response = await fetch(`/api/departments`, {
+            method: "GET",
+        });
         const departments = await response.json();
 
-        selectIds.forEach((id) => {
-            const select = document.getElementById(id);
-
-            if (!select) return;
-
-            select.innerHTML = '<option value="">Select Department</option>';
-
+        selectDepartments.forEach((select) => {
             departments.forEach((dep) => {
-                const option = document.createElement("option");
-                option.value = dep.id;
-                option.textContent = dep.name;
-                select.appendChild(option);
+                const options = document.createElement("option");
+
+                options.value = dep.id;
+                options.textContent = dep.name;
+
+                select.appendChild(options);
             });
         });
+
+        console.log(selectDepartments);
     } catch (error) {
-        console.error("Failed to load departments:", error);
+        console.error("Failed to load departments", error);
     }
 }
 

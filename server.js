@@ -143,10 +143,9 @@ app.delete("/api/employees/:id", async (req, res) => {
 app.patch("/api/employees/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, role, department, status, joinDate } = req.body ?? {};
-        const formattedDate = new Date(joinDate).toLocaleDateString("sv-SE");
+        const { name, role, department } = req.body ?? {};
 
-        if (!name || !role || !department || !joinDate) {
+        if (!name || !role || !department) {
             return res.status(400).json({
                 message: "Please fill in all required fields.",
             });
@@ -156,27 +155,16 @@ app.patch("/api/employees/:id", async (req, res) => {
             name,
             role,
             department,
-            status,
-            joinDate,
         });
-
-        const [deptRows] = await db.query(
-            "SELECT id FROM departments WHERE name = ?",
-            [department],
-        );
-        if (deptRows.length === 0) {
-            return res.status(400).json({ message: "Department not found." });
-        }
 
         const [result] = await db.query(
             `UPDATE employees
-             SET name = ?, role = ?, department_id = ?, status = ?, join_date = ?
-             WHERE id = ?`,
-            [name, role, deptRows[0].id, status || "active", formattedDate, id],
+                SET name = ?, role = ?, department_id = ?
+                WHERE id = ?`,
+            [name, role, department, id],
         );
-
         if (result.affectedRows === 0) {
-            return res.status(404).json({ message: "Employee not found" });
+            return res.status(400).json({ message: "Department not found." });
         }
 
         res.json({ message: "Employee updated!" });

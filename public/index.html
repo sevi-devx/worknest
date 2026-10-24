@@ -632,8 +632,11 @@
                     </div>
                     <div class="form-group">
                         <label>Department</label>
-                        <select class="form-control" id="departments-employee">
-                            <option value=""></option>
+                        <select
+                            class="form-control departments-employee"
+                            id="add-departments-employee"
+                        >
+                            <option value="">Select Department</option>
                         </select>
                     </div>
                 </div>
@@ -687,31 +690,13 @@
                             />
                         </div>
                         <div class="form-group">
-                            <label>Edit Employee Department</label>
+                            <label>Department</label>
                             <select
-                                class="form-control"
-                                id="deparments-employee"
+                                class="form-control departments-employee"
+                                id="edit-employee-department"
                             >
-                                <option value=""></option>
+                                <option value="">Select Department</option>
                             </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Status Role</label>
-                            <input
-                                type="text"
-                                class="form-control"
-                                placeholder="e.g. Software Engineer"
-                                id="edit-employee-status"
-                            />
-                        </div>
-                        <div class="form-group">
-                            <label>Join Date Role</label>
-                            <input
-                                type="text"
-                                class="form-control"
-                                placeholder="e.g. Software Engineer"
-                                id="edit-employee-join-date"
-                            />
                         </div>
                     </div>
                 </div>
@@ -858,6 +843,8 @@
             </div>
         </div>
 
+        <!-- Add Department Modal -->
+
         <div class="modal-overlay" data-tab="add-department">
             <div class="modal-box">
                 <div class="modal-header">
@@ -927,7 +914,7 @@
 
         <!-- End of modal overlay -->
         <div class="sidebar-overlay" id="sidebar-overlay"></div>
-        <script type="module" src="assets/js/script.js"></script>
+        <script type="module" src="assets/js/script.js" defer></script>
     </body>
 </html>
 
