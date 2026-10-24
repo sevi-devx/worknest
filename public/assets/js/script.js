@@ -156,7 +156,7 @@ async function getEmployeeDetails(id) {
         document.getElementById("edit-employee-name").value = result.name;
         document.getElementById("edit-employee-role").value = result.role;
         document.getElementById("edit-employee-department").value =
-            result.department;
+            result.departmentId;
     } catch (error) {
         console.error("Failed to edit employee");
     }
