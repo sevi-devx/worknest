@@ -1,7 +1,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 document.addEventListener("DOMContentLoaded", async () => {
-    await loadDepartments();
+    await loadDepartmentsOptions();
     await loadEmployees();
 });
 
@@ -101,7 +101,7 @@ async function addNewEmployee() {
 
         const status = "inactive";
         const joinDate = currentDate();
-        const response = await fetch(`/api/employees`, {
+        const response = await fetch(EMPLOYEE_API, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -156,7 +156,7 @@ function toMySqlDate(value) {
 async function getEmployeeDetails(id) {
     try {
         console.log("successfully extracted employee details.");
-        const response = await fetch(`/api/employees/${id}`, {
+        const response = await fetch(EMPLOYEE_API + "/" + id, {
             method: "GET",
         });
         const result = await response.json();
@@ -179,7 +179,7 @@ async function editEmployee(id) {
         "edit-employee-department",
     ).value;
 
-    const response = await fetch(`/api/employees/${id}`, {
+    const response = await fetch(EMPLOYEE_API + "/" + id, {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
@@ -199,7 +199,7 @@ async function editEmployee(id) {
 // Delete Employee
 async function deleteEmployee(id) {
     try {
-        const response = await fetch(`/api/employees/${id}`, {
+        const response = await fetch(EMPLOYEE_API + "/" + id, {
             method: "DELETE",
         });
         const result = await response.json();
@@ -212,13 +212,12 @@ async function deleteEmployee(id) {
 
 // Select option for departmnets
 
-async function loadDepartments() {
-    console.log("loadDepartments() started");
+async function loadDepartmentsOptions() {
     const selectDepartments = document.querySelectorAll(
         ".departments-employee",
     );
     try {
-        const response = await fetch(`/api/departments`, {
+        const response = await fetch(EMPLOYEE_API, {
             method: "GET",
         });
         const departments = await response.json();
@@ -240,6 +239,10 @@ async function loadDepartments() {
     }
 }
 
+async function loadDepartments() {}
+
+function makeDepartmentRow(dep) {}
+
 async function addDepartment() {
     try {
         const name = document.getElementById("add-new-employee-name").value;
@@ -252,7 +255,7 @@ async function addDepartment() {
 
         const status = "inactive";
         const joinDate = currentDate();
-        const response = await fetch(`/api/employees`, {
+        const response = await fetch(EMPLOYEE_API, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -316,10 +319,11 @@ setInterval(updateClock, 1000);
 
 // REST API
 
-const API_URL = "/api/employees";
+const EMPLOYEE_API = "/api/employees";
+const DEPARTMENT_API = "/api/departments";
 
 async function loadEmployees() {
-    const response = await fetch(API_URL);
+    const response = await fetch(EMPLOYEE_API);
     const employees = await response.json();
     const metricTotalEmployees = document.getElementById(
         "metric-total-employees",
@@ -329,7 +333,7 @@ async function loadEmployees() {
     let rowsHtml = "";
 
     employees.forEach((emp) => {
-        rowsHtml += makeRow(emp);
+        rowsHtml += makeEmployeeRow(emp);
     });
 
     tbody.innerHTML = rowsHtml;
@@ -354,7 +358,7 @@ const employeeChannel = supabase
 
 loadEmployees();
 
-function makeRow(emp) {
+function makeEmployeeRow(emp) {
     let badgeClass = "badge-inactive";
     if (emp.status === "active") {
         badgeClass = "badge-active";
