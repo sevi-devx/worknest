@@ -50,8 +50,17 @@ const addEmployeeModalBtn = document.querySelector(
 
 if (addEmployeeModalBtn) {
     addEmployeeModalBtn.addEventListener("click", () => {
-        loadDepartments();
         openModal("add-employee");
+    });
+}
+
+const addDepartmentModalBtn = document.querySelector(
+    "#add-department-modal-btn",
+);
+
+if (addDepartmentModalBtn) {
+    addDepartmentModalBtn.addEventListener("click", () => {
+        openModal("add-department");
     });
 }
 
@@ -228,6 +237,43 @@ async function loadDepartments() {
         console.log(selectDepartments);
     } catch (error) {
         console.error("Failed to load departments", error);
+    }
+}
+
+async function addDepartment() {
+    try {
+        const name = document.getElementById("add-new-employee-name").value;
+        const role = document.getElementById("add-new-employee-role").value;
+        const department = document.getElementById(
+            "add-new-employee-department",
+        ).value;
+        document.getElementById("add-new-employee-name").value = "";
+        document.getElementById("add-new-employee-role").value = "";
+
+        const status = "inactive";
+        const joinDate = currentDate();
+        const response = await fetch(`/api/employees`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: name,
+                role: role,
+                department: department,
+                status: status,
+                joinDate: joinDate,
+            }),
+        });
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.message || "Failed to add employee");
+        }
+
+        await loadEmployees();
+    } catch (error) {
+        console.error("Failed to add new employee", error);
     }
 }
 
