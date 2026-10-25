@@ -1,104 +1,67 @@
-// Please move this to other file
+// ========================
+// 1. SUPABSE SETUP
+// ========================
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const supabase = createClient(
     "https://yyrsdeildevgexbueony.supabase.co",
     "sb_publishable_VMFaAijOxAfxW7uxKV-aBg_sRzjlK0b",
 );
-// End
+
+// =======================
+// 2. CONSTANTS
+// =======================
 const EMPLOYEE_API = "/api/employees";
 const DEPARTMENT_API = "/api/departments";
 
-document.addEventListener("DOMContentLoaded", async () => {
-    await loadDepartmentsOptions();
-    await loadEmployees();
-});
-
-// Panel functions
+// =============================
+// 3. DOM ELEMENTS REFERENCES
+// =============================
+const tbody = document.getElementById("employee-table-body");
 
 const menuItems = document.querySelectorAll(".menu-item");
 const tabPanels = document.querySelectorAll(".tab-panel");
 
-menuItems.forEach((items) => {
-    items.addEventListener("click", (event) => {
-        const targetId = event.currentTarget.dataset.tab;
-
-        menuItems.forEach((menu) => menu.classList.remove("active"));
-        tabPanels.forEach((panel) => panel.classList.remove("active"));
-
-        event.currentTarget.classList.add("active");
-        const activePanel = document.getElementById(targetId);
-        if (activePanel) {
-            activePanel.classList.add("active");
-        }
-    });
-});
-
-// Modal functions
-
 const modalOverlay = document.querySelector(".modal-overlay");
-const addOverlay = document.querySelector;
-
-function openModal(mode) {
-    const overlay = document.querySelector(
-        `.modal-overlay[data-tab="${mode}"]`,
-    );
-    overlay.classList.add("active");
-}
-
-function closeModal() {
-    document
-        .querySelectorAll(".modal-overlay.active")
-        .forEach((overlay) => overlay.classList.remove("active"));
-}
-
 const addEmployeeModalBtn = document.querySelector(
     ".add-new-employee-modal-btn",
 );
-
-if (addEmployeeModalBtn) {
-    addEmployeeModalBtn.addEventListener("click", () => {
-        openModal("add-employee");
-    });
-}
-
 const addDepartmentModalBtn = document.querySelector(
     "#add-department-modal-btn",
 );
 
-if (addDepartmentModalBtn) {
-    addDepartmentModalBtn.addEventListener("click", () => {
-        openModal("add-department");
-    });
-}
+const toggleBtn = document.getElementById("toggle-sidebar");
+const sidebar = document.getElementById("sidebar");
+const sidebarOverlay = document.querySelector(".sidebar-overlay");
+// ==============================
+// 4. APPLICATION INTIALIZATION
+// ==============================
 
-document.addEventListener("click", (event) => {
-    const button = event.target.closest(".modal-overlay [data-action]");
-
-    if (!button) return;
-
-    const action = button.dataset.action;
-    const mode = button.closest(".modal-overlay").dataset.tab;
-
-    if (action === "close") {
-        closeModal("add-employee");
-        closeModal("edit");
-    } else if (action === "cancel") {
-        closeModal("add-employee");
-        closeModal("edit");
-    } else if (action === "save") {
-        if (mode === "add-employee") {
-            addNewEmployee();
-        } else if (mode === "edit") {
-            const id = document.getElementById("edit-employee-id").value;
-            editEmployee(id);
-        }
-        closeModal();
-    }
+document.addEventListener("DOMContentLoaded", async () => {
+    await loadDepartmentsOptions();
+    await loadEmployees();
+    updateClock();
+    setInterval(updateClock, 1000);
 });
 
-// Employee functions
+// Real-time update via supabase
+supabase
+    .channel("worknest")
+    .on("broadcast", { event: "employees-changed" }, (payload) => {
+        console.log("BROADCAST RECEIVED:", payload);
+        loadEmployees();
+    })
+    .subscribe((status, error) => {
+        console.log("Supabase status:", status);
 
+        if (error) {
+            console.error("Supabase subscription error:", error);
+        }
+    });
+
+// =========================
+// 5. EMPLOYEE FUNCTIONS
+// =========================
 async function loadEmployees() {
     const response = await fetch(EMPLOYEE_API);
     const employees = await response.json();
@@ -200,30 +163,6 @@ async function addNewEmployee() {
     }
 }
 
-const tbody = document.getElementById("employee-table-body");
-
-tbody.addEventListener("click", (event) => {
-    const button = event.target.closest(".btn-action");
-
-    if (!button) return;
-
-    const id = button.dataset.id;
-    const action = button.dataset.action;
-
-    if (action === "delete") {
-        deleteEmployee(id);
-    } else if (action === "edit") {
-        console.log("edit employee pressed");
-        getEmployeeDetails(id);
-        openModal("edit");
-    }
-});
-
-function toMySqlDate(value) {
-    const date = new Date(value);
-    return date.toISOString().slice(0, 10);
-}
-
 async function getEmployeeDetails(id) {
     try {
         console.log("successfully extracted employee details.");
@@ -267,7 +206,6 @@ async function editEmployee(id) {
     await loadEmployees();
 }
 
-// Delete Employee
 async function deleteEmployee(id) {
     try {
         const response = await fetch(EMPLOYEE_API + "/" + id, {
@@ -280,56 +218,38 @@ async function deleteEmployee(id) {
         console.error("Failed to delete employee.");
     }
 }
+tbody.addEventListener("click", (event) => {
+    const button = event.target.closest(".btn-action");
 
-// Department functions
+    if (!button) return;
 
+    const id = button.dataset.id;
+    const action = button.dataset.action;
+
+    if (action === "delete") {
+        deleteEmployee(id);
+    } else if (action === "edit") {
+        console.log("edit employee pressed");
+        getEmployeeDetails(id);
+        openModal("edit");
+    }
+});
+
+// =========================
+// 6. DEPARMTENT FUNCTIONS
+// =========================
 async function loadDepartments() {}
 
 function makeDepartmentRow(dep) {}
 
-async function addDepartment() {
-    try {
-        const name = document.getElementById("add-new-employee-name").value;
-        const role = document.getElementById("add-new-employee-role").value;
-        const department = document.getElementById(
-            "add-new-employee-department",
-        ).value;
-        document.getElementById("add-new-employee-name").value = "";
-        document.getElementById("add-new-employee-role").value = "";
-
-        const status = "inactive";
-        const joinDate = currentDate();
-        const response = await fetch(EMPLOYEE_API, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                name: name,
-                role: role,
-                department: department,
-                status: status,
-                joinDate: joinDate,
-            }),
-        });
-        const result = await response.json();
-
-        if (!response.ok) {
-            throw new Error(result.message || "Failed to add employee");
-        }
-
-        await loadEmployees();
-    } catch (error) {
-        console.error("Failed to add new employee", error);
-    }
-}
+async function addDepartment() {}
 
 async function loadDepartmentsOptions() {
     const selectDepartments = document.querySelectorAll(
         ".departments-employee",
     );
     try {
-        const response = await fetch(EMPLOYEE_API, {
+        const response = await fetch(DEPARTMENT_API, {
             method: "GET",
         });
         const departments = await response.json();
@@ -351,7 +271,105 @@ async function loadDepartmentsOptions() {
     }
 }
 
-// Other website feature
+// =========================
+// 7. UI & MODAL HANDLERS
+// =========================
+
+function openModal(mode) {
+    const overlay = document.querySelector(
+        `.modal-overlay[data-tab="${mode}"]`,
+    );
+    overlay.classList.add("active");
+}
+
+function closeModal() {
+    document
+        .querySelectorAll(".modal-overlay.active")
+        .forEach((overlay) => overlay.classList.remove("active"));
+}
+
+if (addEmployeeModalBtn) {
+    addEmployeeModalBtn.addEventListener("click", () => {
+        openModal("add-employee");
+    });
+}
+
+if (addDepartmentModalBtn) {
+    addDepartmentModalBtn.addEventListener("click", () => {
+        openModal("add-department");
+    });
+}
+
+document.addEventListener("click", (event) => {
+    const button = event.target.closest(".modal-overlay [data-action]");
+
+    if (!button) return;
+
+    const action = button.dataset.action;
+    const mode = button.closest(".modal-overlay").dataset.tab;
+
+    if (action === "close") {
+        closeModal("add-employee");
+        closeModal("edit");
+    } else if (action === "cancel") {
+        closeModal("add-employee");
+        closeModal("edit");
+    } else if (action === "save") {
+        if (mode === "add-employee") {
+            addNewEmployee();
+        } else if (mode === "edit") {
+            const id = document.getElementById("edit-employee-id").value;
+            editEmployee(id);
+        }
+        closeModal();
+    }
+});
+
+// Sidebar navigation tab switcher
+menuItems.forEach((items) => {
+    items.addEventListener("click", (event) => {
+        const targetId = event.currentTarget.dataset.tab;
+
+        menuItems.forEach((menu) => menu.classList.remove("active"));
+        tabPanels.forEach((panel) => panel.classList.remove("active"));
+
+        event.currentTarget.classList.add("active");
+        const activePanel = document.getElementById(targetId);
+        if (activePanel) {
+            activePanel.classList.add("active");
+        }
+    });
+});
+
+const closeSidebar = () => {
+    sidebar.classList.remove("open");
+    sidebarOverlay.classList.remove("active");
+};
+
+const openSidebar = () => {
+    sidebar.classList.add("open");
+    sidebarOverlay.classList.add("active");
+};
+
+toggleBtn.addEventListener("click", () => {
+    if (toggleBtn && sidebar) {
+        openSidebar();
+
+        sidebarOverlay.addEventListener("click", () => {
+            closeSidebar();
+            console.log("sidebarOverlay clicked");
+        });
+    }
+});
+
+// ==========================
+// 8. UTILITY FUNCTIONS
+// ==========================
+function toMySqlDate(value) {
+    const date = new Date(value);
+    return date.toISOString().slice(0, 10);
+}
+
 function currentDate() {
     const now = new Date();
 
@@ -386,44 +404,3 @@ function updateClock() {
         " " +
         label;
 }
-
-setInterval(updateClock, 1000);
-
-const employeeChannel = supabase
-    .channel("worknest")
-    .on("broadcast", { event: "employees-changed" }, (payload) => {
-        console.log("BROADCAST RECEIVED:", payload);
-        loadEmployees();
-    })
-    .subscribe((status, error) => {
-        console.log("Supabase status:", status);
-
-        if (error) {
-            console.error("Supabase subscription error:", error);
-        }
-    });
-
-const toggleBtn = document.getElementById("toggle-sidebar");
-const sidebar = document.getElementById("sidebar");
-const sidebarOverlay = document.querySelector(".sidebar-overlay");
-
-const closeSidebar = () => {
-    sidebar.classList.remove("open");
-    sidebarOverlay.classList.remove("active");
-};
-
-const openSidebar = () => {
-    sidebar.classList.add("open");
-    sidebarOverlay.classList.add("active");
-};
-
-toggleBtn.addEventListener("click", () => {
-    if (toggleBtn && sidebar) {
-        openSidebar();
-
-        sidebarOverlay.addEventListener("click", () => {
-            closeSidebar();
-            console.log("sidebarOverlay clicked");
-        });
-    }
-});
