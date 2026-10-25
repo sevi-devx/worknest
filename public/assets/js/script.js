@@ -1,14 +1,20 @@
+// Please move this to other file
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const supabase = createClient(
+    "https://yyrsdeildevgexbueony.supabase.co",
+    "sb_publishable_VMFaAijOxAfxW7uxKV-aBg_sRzjlK0b",
+);
+// End
+const EMPLOYEE_API = "/api/employees";
+const DEPARTMENT_API = "/api/departments";
 
 document.addEventListener("DOMContentLoaded", async () => {
     await loadDepartmentsOptions();
     await loadEmployees();
 });
 
-const supabase = createClient(
-    "https://yyrsdeildevgexbueony.supabase.co",
-    "sb_publishable_VMFaAijOxAfxW7uxKV-aBg_sRzjlK0b",
-);
+// Panel functions
 
 const menuItems = document.querySelectorAll(".menu-item");
 const tabPanels = document.querySelectorAll(".tab-panel");
@@ -27,6 +33,8 @@ menuItems.forEach((items) => {
         }
     });
 });
+
+// Modal functions
 
 const modalOverlay = document.querySelector(".modal-overlay");
 const addOverlay = document.querySelector;
@@ -89,6 +97,72 @@ document.addEventListener("click", (event) => {
     }
 });
 
+// Employee functions
+
+async function loadEmployees() {
+    const response = await fetch(EMPLOYEE_API);
+    const employees = await response.json();
+    const metricTotalEmployees = document.getElementById(
+        "metric-total-employees",
+    );
+    const entriesText = document.querySelector("#entries");
+
+    let rowsHtml = "";
+
+    employees.forEach((emp) => {
+        rowsHtml += makeEmployeeRow(emp);
+    });
+
+    tbody.innerHTML = rowsHtml;
+    entriesText.innerText = `Showing ${employees.length} entries`;
+
+    metricTotalEmployees.innerText = employees.length;
+}
+
+function makeEmployeeRow(emp) {
+    let badgeClass = "badge-inactive";
+    if (emp.status === "active") {
+        badgeClass = "badge-active";
+    } else if (emp.status === "On Leave") {
+        badgeClass = "badge-leave";
+    }
+
+    const avatar =
+        "http://ui-avatars.com/api/?name=" + encodeURIComponent(emp.name);
+
+    return `
+    <tr>
+      <td>
+        <div class="employee-cell">
+          <img class="employee-avatar" src="${avatar}" alt="Avatar" />
+          <div>
+            <span class="employee-name">${emp.name}</span>
+            <span class="employee-role">${emp.role}</span>
+          </div>
+        </div>
+      </td>
+      <td>${emp.role}</td>
+      <td>${emp.department}</td>
+      <td>
+        <span class="badge ${badgeClass}">
+          <span class="badge-dot"></span> ${emp.status}
+        </span>
+      </td>
+      <td>${emp.joinDate}</td>
+      <td>
+        <div class="actions-cell" style="justify-content: flex-end;">
+          <button class="btn-action edit-modal-btn" title="Edit" data-id="${emp.id}" data-action="edit">
+            <i class="fa-regular fa-pen-to-square"></i>
+          </button>
+          <button class="btn-action delete" title="Delete" data-id="${emp.id}" data-action="delete">
+            <i class="fa-regular fa-trash-can"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+  `;
+}
+
 async function addNewEmployee() {
     try {
         const name = document.getElementById("add-new-employee-name").value;
@@ -126,8 +200,6 @@ async function addNewEmployee() {
     }
 }
 
-// Edit and save employee Overlay
-
 const tbody = document.getElementById("employee-table-body");
 
 tbody.addEventListener("click", (event) => {
@@ -147,7 +219,6 @@ tbody.addEventListener("click", (event) => {
     }
 });
 
-//
 function toMySqlDate(value) {
     const date = new Date(value);
     return date.toISOString().slice(0, 10);
@@ -210,34 +281,7 @@ async function deleteEmployee(id) {
     }
 }
 
-// Select option for departmnets
-
-async function loadDepartmentsOptions() {
-    const selectDepartments = document.querySelectorAll(
-        ".departments-employee",
-    );
-    try {
-        const response = await fetch(EMPLOYEE_API, {
-            method: "GET",
-        });
-        const departments = await response.json();
-
-        selectDepartments.forEach((select) => {
-            departments.forEach((dep) => {
-                const options = document.createElement("option");
-
-                options.value = dep.id;
-                options.textContent = dep.name;
-
-                select.appendChild(options);
-            });
-        });
-
-        console.log(selectDepartments);
-    } catch (error) {
-        console.error("Failed to load departments", error);
-    }
-}
+// Department functions
 
 async function loadDepartments() {}
 
@@ -280,6 +324,34 @@ async function addDepartment() {
     }
 }
 
+async function loadDepartmentsOptions() {
+    const selectDepartments = document.querySelectorAll(
+        ".departments-employee",
+    );
+    try {
+        const response = await fetch(EMPLOYEE_API, {
+            method: "GET",
+        });
+        const departments = await response.json();
+
+        selectDepartments.forEach((select) => {
+            departments.forEach((dep) => {
+                const options = document.createElement("option");
+
+                options.value = dep.id;
+                options.textContent = dep.name;
+
+                select.appendChild(options);
+            });
+        });
+
+        console.log(selectDepartments);
+    } catch (error) {
+        console.error("Failed to load departments", error);
+    }
+}
+
+// Other website feature
 function currentDate() {
     const now = new Date();
 
@@ -317,31 +389,6 @@ function updateClock() {
 
 setInterval(updateClock, 1000);
 
-// REST API
-
-const EMPLOYEE_API = "/api/employees";
-const DEPARTMENT_API = "/api/departments";
-
-async function loadEmployees() {
-    const response = await fetch(EMPLOYEE_API);
-    const employees = await response.json();
-    const metricTotalEmployees = document.getElementById(
-        "metric-total-employees",
-    );
-    const entriesText = document.querySelector("#entries");
-
-    let rowsHtml = "";
-
-    employees.forEach((emp) => {
-        rowsHtml += makeEmployeeRow(emp);
-    });
-
-    tbody.innerHTML = rowsHtml;
-    entriesText.innerText = `Showing ${employees.length} entries`;
-
-    metricTotalEmployees.innerText = employees.length;
-}
-
 const employeeChannel = supabase
     .channel("worknest")
     .on("broadcast", { event: "employees-changed" }, (payload) => {
@@ -355,52 +402,6 @@ const employeeChannel = supabase
             console.error("Supabase subscription error:", error);
         }
     });
-
-loadEmployees();
-
-function makeEmployeeRow(emp) {
-    let badgeClass = "badge-inactive";
-    if (emp.status === "active") {
-        badgeClass = "badge-active";
-    } else if (emp.status === "On Leave") {
-        badgeClass = "badge-leave";
-    }
-
-    const avatar =
-        "http://ui-avatars.com/api/?name=" + encodeURIComponent(emp.name);
-
-    return `
-    <tr>
-      <td>
-        <div class="employee-cell">
-          <img class="employee-avatar" src="${avatar}" alt="Avatar" />
-          <div>
-            <span class="employee-name">${emp.name}</span>
-            <span class="employee-role">${emp.role}</span>
-          </div>
-        </div>
-      </td>
-      <td>${emp.role}</td>
-      <td>${emp.department}</td>
-      <td>
-        <span class="badge ${badgeClass}">
-          <span class="badge-dot"></span> ${emp.status}
-        </span>
-      </td>
-      <td>${emp.joinDate}</td>
-      <td>
-        <div class="actions-cell" style="justify-content: flex-end;">
-          <button class="btn-action edit-modal-btn" title="Edit" data-id="${emp.id}" data-action="edit">
-            <i class="fa-regular fa-pen-to-square"></i>
-          </button>
-          <button class="btn-action delete" title="Delete" data-id="${emp.id}" data-action="delete">
-            <i class="fa-regular fa-trash-can"></i>
-          </button>
-        </div>
-      </td>
-    </tr>
-  `;
-}
 
 const toggleBtn = document.getElementById("toggle-sidebar");
 const sidebar = document.getElementById("sidebar");
