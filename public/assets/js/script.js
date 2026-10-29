@@ -38,8 +38,10 @@ const sidebarOverlay = document.querySelector(".sidebar-overlay");
 // ==============================
 
 document.addEventListener("DOMContentLoaded", async () => {
+    await loadHeadDepartmentOptions();
     await loadDepartmentsOptions();
     await loadEmployees();
+    await loadDepartments();
     updateClock();
     setInterval(updateClock, 1000);
 });
@@ -62,13 +64,35 @@ supabase
 // =========================
 // 5. EMPLOYEE FUNCTIONS
 // =========================
+async function loadHeadDepartmentOptions() {
+    const selectHead = document.getElementById("add-department-head");
+    try {
+        const response = await fetch(EMPLOYEE_API, {
+            method: "GET",
+        });
+        const employees = await response.json();
+
+        employees.forEach((emp) => {
+            console.log(emp);
+            const options = document.createElement("option");
+
+            options.value = emp.id;
+            options.textContent = emp.name;
+
+            selectHead.appendChild(options);
+        });
+    } catch (error) {
+        console.error("failed to load head employees", error);
+    }
+}
+
 async function loadEmployees() {
     const response = await fetch(EMPLOYEE_API);
     const employees = await response.json();
     const metricTotalEmployees = document.getElementById(
         "metric-total-employees",
     );
-    const entriesText = document.querySelector("#entries");
+    const entriesText = document.getElementById("entries");
 
     let rowsHtml = "";
 
@@ -238,9 +262,38 @@ tbody.addEventListener("click", (event) => {
 // =========================
 // 6. DEPARMTENT FUNCTIONS
 // =========================
-async function loadDepartments() {}
+async function loadDepartments() {
+    const response = await fetch(DEPARTMENT_API);
+    const departments = await response.json();
 
-function makeDepartmentRow(dep) {}
+    let tableDepartments = "";
+
+    departments.forEach((dep) => {
+        tableDepartments += makeDepartmentCard(dep);
+    });
+    const tableDepartmentsContainer =
+        document.querySelector("#department-card");
+    tableDepartmentsContainer.innerHTML = tableDepartments;
+}
+
+function makeDepartmentCard(dep) {
+    if (!dep.head) {
+        dep.head = "Not Assigned";
+    }
+
+    return `
+        <div class="dept-grid">
+            <div class="dept-card">
+                <div class="dept-card-header"></div>
+                <h3>${dep.name}</h3>
+                <span class="badge badge-active"
+                    ><span class="badge-dot"></span> 84 Staff</span
+                >
+                <p class="card-subtitle">Head: ${dep.head}</p>
+            </div>
+        </div>
+    `;
+}
 
 async function addDepartment() {}
 

@@ -191,6 +191,29 @@ app.get("/api/departments", async (req, res) => {
     }
 });
 
+app.post("/api/departments", async (req, res) => {
+    try {
+        const { name, head } = req.body ?? {};
+
+        if (!name || !head) {
+            return res.status(400).json({
+                message: "Please fill in all required fields.",
+            });
+        }
+        await db.query(
+            `INSERT INTO departments (name, head)
+            VALUES (?, ?)`,
+            [name, head],
+        );
+
+        return res.status(200).json({
+            message: "Department Added!",
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "Server error" });
+    }
+});
+
 // SUPABASE AUTORELOAD
 
 async function notifyEmployeesChanged() {
