@@ -79,7 +79,6 @@ app.get("/api/employees", async (req, res) => {
 app.post("/api/employees", async (req, res) => {
     console.log("WORKNEST POST ROUTE REACHED");
 
-    // Keep the rest of your existing code here
     const { name, role, department, status, joinDate } = req.body ?? {};
 
     console.log({
@@ -97,9 +96,10 @@ app.post("/api/employees", async (req, res) => {
     }
     await db.query(
         `INSERT INTO employees (name, role, department_id, status, join_date)
-        VALUES (?, ?, (SELECT id FROM departments WHERE name = ?), ?, ?)`,
+        VALUES (?, ?, ?, ?, ?)`,
         [name, role, department, status || "active", joinDate],
     );
+
     await notifyEmployeesChanged();
     return res.status(200).json({
         message: "Employee Added!",
