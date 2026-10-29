@@ -292,28 +292,20 @@ async function loadDepartments() {
     const departments = await response.json();
 
     let tableDepartments = "";
-    let departmentCount = 0;
 
     departments.forEach((dep) => {
         tableDepartments += makeDepartmentCard(dep);
-        departmentCount++;
     });
     const tableDepartmentsContainer =
         document.querySelector("#department-card");
     tableDepartmentsContainer.innerHTML = tableDepartments;
-
-    const metricTotalDepartments = document.getElementById(
-        "metric-total-departments",
-    );
-    metricTotalDepartments.textContent = departmentCount;
 }
 
 function makeDepartmentCard(dep) {
-    if (!dep.head_name) {
-        dep.head_name = "Not Assigned";
+    if (!dep.head) {
+        dep.head = "Not Assigned";
     }
 
-    console.log(dep);
     return `
         <div class="dept-grid">
             <div class="dept-card">
@@ -322,7 +314,7 @@ function makeDepartmentCard(dep) {
                 <span class="badge badge-active"
                     ><span class="badge-dot"></span> 84 Staff</span
                 >
-                <p class="card-subtitle">Head: ${dep.head_name}</p>
+                <p class="card-subtitle">Head: ${dep.head}</p>
             </div>
         </div>
     `;
