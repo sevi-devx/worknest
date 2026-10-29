@@ -131,7 +131,7 @@ async function addNewEmployee() {
         const name = document.getElementById("add-new-employee-name").value;
         const role = document.getElementById("add-new-employee-role").value;
         const department = document.getElementById(
-            "add-new-employee-department",
+            "add-departments-employee",
         ).value;
         document.getElementById("add-new-employee-name").value = "";
         document.getElementById("add-new-employee-role").value = "";
