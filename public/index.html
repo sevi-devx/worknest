@@ -120,8 +120,7 @@
                         <div>
                             <h1 class="page-title">Dashboard Overview</h1>
                             <p class="page-subtitle">
-                                Welcome back, Sarah! Here is your HR summary for
-                                today.
+                                Welcome back, Here is your HR summary for today.
                             </p>
                         </div>
                     </div>
@@ -354,16 +353,7 @@
                         </button>
                     </div>
 
-                    <div class="dept-grid">
-                        <div class="dept-card">
-                            <div class="dept-card-header"></div>
-                            <h3>Software Engineering</h3>
-                            <span class="badge badge-active"
-                                ><span class="badge-dot"></span> 84 Staff</span
-                            >
-                            <p class="card-subtitle">Head: Alex Rivera</p>
-                        </div>
-                    </div>
+                    <div id="department-card"></div>
                 </section>
 
                 <!-- 4. ATTENDANCE TAB PANEL -->
@@ -760,17 +750,11 @@
                             id="add-department-name"
                         />
                         <div class="form-group">
-                            <label>Department Role</label>
-                            <input
-                                type="text"
-                                class="form-control"
-                                placeholder="e.g. Software Engineer"
-                                id="add-department-role"
-                            />
-                        </div>
-                        <div class="form-group">
                             <label>Head</label>
-                            <select class="form-control" id="head-department">
+                            <select
+                                class="form-control"
+                                id="add-department-head"
+                            >
                                 <option value="">Select Employee</option>
                             </select>
                         </div>
