@@ -178,11 +178,9 @@ app.patch("/api/employees/:id", async (req, res) => {
 app.get("/api/departments", async (req, res) => {
     try {
         const [rows] = await db.query(`
-            SELECT d.id, d.name, d.head_id,
-                e.name AS head_name,
-                e.role AS head_role
+            SELECT d.id, d.name, d.head_id, e.name AS head_name
             FROM departments d
-            LEFT JOIN employees e ON e.id = d.head_id;
+            LEFT JOIN employees e ON e.id = d.head_id
         `);
 
         const departments = rows.map((row) => ({
