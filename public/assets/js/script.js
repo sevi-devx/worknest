@@ -292,13 +292,20 @@ async function loadDepartments() {
     const departments = await response.json();
 
     let tableDepartments = "";
+    let departmentCount = 0;
 
     departments.forEach((dep) => {
         tableDepartments += makeDepartmentCard(dep);
+        departmentCount++;
     });
     const tableDepartmentsContainer =
         document.querySelector("#department-card");
     tableDepartmentsContainer.innerHTML = tableDepartments;
+
+    const metricTotalDepartments = document.getElementById(
+        "metric-total-departments",
+    );
+    metricTotalDepartments.textContent = departmentCount;
 }
 
 function makeDepartmentCard(dep) {
