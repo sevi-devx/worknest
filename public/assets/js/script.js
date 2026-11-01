@@ -277,10 +277,11 @@ async function loadDepartments() {
 }
 
 function makeDepartmentCard(dep) {
-    if (!dep.head) {
-        dep.head = "Not Assigned";
+    if (!dep.head_name) {
+        dep.head_name = "Not Assigned";
     }
 
+    console.log(dep);
     return `
         <div class="dept-grid">
             <div class="dept-card">
@@ -289,7 +290,7 @@ function makeDepartmentCard(dep) {
                 <span class="badge badge-active"
                     ><span class="badge-dot"></span> 84 Staff</span
                 >
-                <p class="card-subtitle">Head: ${dep.head}</p>
+                <p class="card-subtitle">Head: ${dep.head_name}</p>
             </div>
         </div>
     `;
