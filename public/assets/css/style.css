@@ -631,24 +631,144 @@ tr:hover td {
 
 /* Department Grid */
 .dept-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.2rem;
-}
-.dept-card {
-    background: var(--surface);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
 }
 
-.dept-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.dept-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dept-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.07);
+}
+
+/* Header */
+.dept-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dept-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0;
+}
+
+
+/* Staff number */
+.dept-staff {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.staff-count {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  line-height: 1;
+}
+
+
+.staff-label {
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+
+/* Head */
+.dept-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.head-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.head-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.head-name {
+  font-weight: 600;
+  color: #1a1a2e;
+  font-size: 0.95rem;
+}
+
+.head-title {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+/* Meta info */
+.dept-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.dept-meta .dot {
+  color: #cbd5e1;
+}
+
+/* Buttons */
+.dept-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.btn {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s ease;
+}
+
+.btn-primary {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.btn-primary:hover {
+  background: #dbeafe;
+}
+
+.btn-secondary {
+  background: #ffffff;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.btn-secondary:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
 }
 
 /* Modal Box Design */
