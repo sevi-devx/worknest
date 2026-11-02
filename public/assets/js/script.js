@@ -19,28 +19,6 @@ const DEPARTMENT_API = "/api/departments";
 // =============================
 const tbody = document.getElementById("employee-table-body");
 
-// =======================
-// 2. CONSTANTS
-// =======================
-const EMPLOYEE_API = "/api/employees";
-const DEPARTMENT_API = "/api/departments";
-
-// =============================
-// 3. DOM ELEMENTS REFERENCES
-// =============================
-const tbody = document.getElementById("employee-table-body");
-
-// =======================
-// 2. CONSTANTS
-// =======================
-const EMPLOYEE_API = "/api/employees";
-const DEPARTMENT_API = "/api/departments";
-
-// =============================
-// 3. DOM ELEMENTS REFERENCES
-// =============================
-const tbody = document.getElementById("employee-table-body");
-
 const menuItems = document.querySelectorAll(".menu-item");
 const tabPanels = document.querySelectorAll(".tab-panel");
 
@@ -253,7 +231,7 @@ async function editEmployee(id) {
     await loadDepartments();
     updateClock();
     setInterval(updateClock, 1000);
-});
+}
 
 async function deleteEmployee(id) {
     try {
