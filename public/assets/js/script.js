@@ -290,33 +290,34 @@ function makeDepartmentCard(dep) {
     return `
         <div class="dept-grid">
         <div class="dept-card">
-            <!-- Header -->
             <div class="dept-card-top">
-            <h3 class="dept-name">${dep.name}</h3>
+            <h3 class="dept-name">Robotics</h3>
+            <span class="dept-status">
+                <span class="status-dot"></span>
+                Active
+            </span>
             </div>
 
-            <!-- Staff count -->
             <div class="dept-staff">
-            <span class="staff-count">${dep.staff_count || 0}</span>
-            <div class="staff-meta">
-                <span class="staff-label">Staff</span>
-            </div>
+            <span class="staff-count">0</span>
             </div>
 
-            <!-- Head -->
             <div class="dept-head">
-            <img 
-                src="${"https://ui-avatars.com/api/?name=" + encodeURIComponent(dep.head.name)}" 
-                alt="${dep.head.name}"
-                class="head-avatar"
-            />
+            <div class="head-avatar">
+                <img class="head-avatar" src="${avatar}" alt="Avatar" />
+            </div>
             <div class="head-info">
                 <span class="head-name">${dep.head.name}</span>
-                <span class="head-title">${dep.head.role || "Department Head"}</span>
+                <span class="head-title">${dep.head.role}</span>
             </div>
             </div>
 
-            <!-- Actions -->
+            <div class="dept-meta">
+            <span>3 open roles</span>
+            <span class="dot">·</span>
+            <span>SF HQ</span>
+            </div>
+
             <div class="dept-actions">
             <button class="btn btn-primary">View team</button>
             <button class="btn btn-secondary">Message</button>

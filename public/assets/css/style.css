@@ -667,6 +667,21 @@ tr:hover td {
   margin: 0;
 }
 
+.dept-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #16a34a;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background: #22c55e;
+  border-radius: 50%;
+}
 
 /* Staff number */
 .dept-staff {
@@ -682,12 +697,22 @@ tr:hover td {
   line-height: 1;
 }
 
+.staff-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
 
 .staff-label {
   font-size: 0.9rem;
   color: #64748b;
 }
 
+.staff-trend {
+  font-size: 0.8rem;
+  color: #16a34a;
+  font-weight: 500;
+}
 
 /* Head */
 .dept-head {
@@ -720,18 +745,6 @@ tr:hover td {
   color: #64748b;
 }
 
-/* Meta info */
-.dept-meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.85rem;
-  color: #64748b;
-}
-
-.dept-meta .dot {
-  color: #cbd5e1;
-}
 
 /* Buttons */
 .dept-actions {
