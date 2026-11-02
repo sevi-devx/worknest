@@ -73,7 +73,6 @@ async function loadHeadDepartmentOptions() {
         const employees = await response.json();
 
         employees.forEach((emp) => {
-            console.log(emp);
             const options = document.createElement("option");
 
             options.value = emp.id;
@@ -189,7 +188,6 @@ async function addNewEmployee() {
 
 async function getEmployeeDetails(id) {
     try {
-        console.log("successfully extracted employee details.");
         const response = await fetch(EMPLOYEE_API + "/" + id, {
             method: "GET",
         });
@@ -206,7 +204,6 @@ async function getEmployeeDetails(id) {
 }
 
 async function editEmployee(id) {
-    console.log("saving edit employee");
     const name = document.getElementById("edit-employee-name").value;
     const role = document.getElementById("edit-employee-role").value;
     const department = document.getElementById(
@@ -253,7 +250,6 @@ tbody.addEventListener("click", (event) => {
     if (action === "delete") {
         deleteEmployee(id);
     } else if (action === "edit") {
-        console.log("edit employee pressed");
         getEmployeeDetails(id);
         openModal("edit");
     }
@@ -284,21 +280,48 @@ async function loadDepartments() {
 }
 
 function makeDepartmentCard(dep) {
-    if (!dep.head_name) {
-        dep.head_name = "Not Assigned";
+    if (!dep.head.name) {
+        dep.head.name = "Not Assigned";
     }
 
-    console.log(dep);
+    const avatar =
+        "http://ui-avatars.com/api/?name=" + encodeURIComponent(dep.head.name);
+
     return `
         <div class="dept-grid">
-            <div class="dept-card">
-                <div class="dept-card-header"></div>
-                <h3>${dep.name}</h3>
-                <span class="badge badge-active"
-                    ><span class="badge-dot"></span> 84 Staff</span
-                >
-                <p class="card-subtitle">Head: ${dep.head_name}</p>
+        <div class="dept-card">
+            <!-- Header -->
+            <div class="dept-card-top">
+            <h3 class="dept-name">${dep.name}</h3>
             </div>
+
+            <!-- Staff count -->
+            <div class="dept-staff">
+            <span class="staff-count">${dep.staff_count || 0}</span>
+            <div class="staff-meta">
+                <span class="staff-label">Staff</span>
+            </div>
+            </div>
+
+            <!-- Head -->
+            <div class="dept-head">
+            <img 
+                src="${"https://ui-avatars.com/api/?name=" + encodeURIComponent(dep.head.name)}" 
+                alt="${dep.head.name}"
+                class="head-avatar"
+            />
+            <div class="head-info">
+                <span class="head-name">${dep.head.name}</span>
+                <span class="head-title">${dep.head.role || "Department Head"}</span>
+            </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="dept-actions">
+            <button class="btn btn-primary">View team</button>
+            <button class="btn btn-secondary">Message</button>
+            </div>
+        </div>
         </div>
     `;
 }
@@ -325,8 +348,6 @@ async function loadDepartmentsOptions() {
                 select.appendChild(options);
             });
         });
-
-        console.log(selectDepartments);
     } catch (error) {
         console.error("Failed to load departments", error);
     }

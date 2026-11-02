@@ -178,15 +178,29 @@ app.patch("/api/employees/:id", async (req, res) => {
 app.get("/api/departments", async (req, res) => {
     try {
         const [rows] = await db.query(`
-            SELECT d.id, d.name, d.head_id, e.name AS head_name
+            SELECT d.id, d.name, d.head_id,
+                e.name AS head_name,
+                e.role AS head_role
             FROM departments d
-            LEFT JOIN employees e ON e.id = d.head_id
+            LEFT JOIN employees e ON e.id = d.head_id;
         `);
 
-        res.json(rows);
+        const departments = rows.map((row) => ({
+            id: row.id,
+            name: row.name,
+            head: row.head_id
+                ? {
+                      id: row.head_id,
+                      name: row.head_name,
+                      role: row.head_role,
+                  }
+                : null,
+        }));
+
+        res.json(departments);
     } catch (error) {
         console.error("Failed to GET departments", error);
-        res.status(500).json({ error: "Failed to fetch departmens" });
+        res.status(500).json({ error: "Failed to fetch departments" });
     }
 });
 
