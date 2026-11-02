@@ -292,10 +292,6 @@ function makeDepartmentCard(dep) {
         <div class="dept-card">
             <div class="dept-card-top">
             <h3 class="dept-name">Robotics</h3>
-            <span class="dept-status">
-                <span class="status-dot"></span>
-                Active
-            </span>
             </div>
 
             <div class="dept-staff">
@@ -310,12 +306,6 @@ function makeDepartmentCard(dep) {
                 <span class="head-name">${dep.head.name}</span>
                 <span class="head-title">${dep.head.role}</span>
             </div>
-            </div>
-
-            <div class="dept-meta">
-            <span>3 open roles</span>
-            <span class="dot">·</span>
-            <span>SF HQ</span>
             </div>
 
             <div class="dept-actions">
